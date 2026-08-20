@@ -11,11 +11,16 @@ function formatarDataProva(iso) {
 
 function formatarContagem(msRestante) {
   const totalSegundos = Math.floor(msRestante / 1000);
-  const horas = Math.floor(totalSegundos / 3600);
+  const dias = Math.floor(totalSegundos / 86400);
+  const horas = Math.floor((totalSegundos % 86400) / 3600);
   const minutos = Math.floor((totalSegundos % 3600) / 60);
   const segundos = totalSegundos % 60;
   const pad = (n) => String(n).padStart(2, "0");
-  return `${pad(horas)}:${pad(minutos)}:${pad(segundos)}`;
+  const relogio = `${pad(horas)}:${pad(minutos)}:${pad(segundos)}`;
+
+  if (dias <= 0) return relogio;
+  const diasTexto = dias === 1 ? "1 dia" : `${dias} dias`;
+  return `${diasTexto} · ${relogio}`;
 }
 
 function atualizarContador(turma) {

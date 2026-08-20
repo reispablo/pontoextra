@@ -35,7 +35,7 @@ Basta adicionar ou remover nomes nessas listas — a página ordena os nomes em 
 
 ## Contador da prova
 
-Cada aba mostra uma contagem regressiva (hh:mm:ss) até o horário de término da prova daquela turma. As datas ficam no objeto `PROVAS`, também em [`js/data.js`](js/data.js):
+Cada aba mostra uma contagem regressiva (dias, quando houver, e hh:mm:ss) até o horário de término da prova daquela turma. As datas ficam no objeto `PROVAS`, também em [`js/data.js`](js/data.js):
 
 ```js
 const PROVAS = {
