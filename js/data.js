@@ -1,3 +1,10 @@
+// Data e hora de término da prova de cada turma (horário local).
+// O contador regressivo em app.js conta até esse instante.
+const PROVAS = {
+  implantacao: "2026-09-08T19:00:00",
+  testes: "2026-09-09T19:00:00",
+};
+
 // Dados dos alunos com ponto extra, por turma.
 // Para atualizar, adicione ou remova nomes das listas abaixo — a
 // ordenação alfabética é aplicada automaticamente por app.js.

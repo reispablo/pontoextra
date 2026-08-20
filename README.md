@@ -33,6 +33,19 @@ const ALUNOS = {
 
 Basta adicionar ou remover nomes nessas listas — a página ordena os nomes em ordem alfabética automaticamente ao carregar.
 
+## Contador da prova
+
+Cada aba mostra uma contagem regressiva (hh:mm:ss) até o horário de término da prova daquela turma. As datas ficam no objeto `PROVAS`, também em [`js/data.js`](js/data.js):
+
+```js
+const PROVAS = {
+  implantacao: "2026-09-08T19:00:00",
+  testes: "2026-09-09T19:00:00",
+};
+```
+
+Quando o horário passa, o contador exibe "Prova encerrada".
+
 ## Visualizar
 
 Abra o [`index.html`](index.html) diretamente no navegador, sem necessidade de build ou servidor.

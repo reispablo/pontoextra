@@ -1,5 +1,46 @@
 // Renderização do mural de pontos extras e controle das abas.
-// Depende do objeto global ALUNOS definido em data.js.
+// Depende dos objetos globais ALUNOS e PROVAS definidos em data.js.
+
+function formatarDataProva(iso) {
+  const data = new Date(iso);
+  const dia = String(data.getDate()).padStart(2, "0");
+  const mes = String(data.getMonth() + 1).padStart(2, "0");
+  const hora = String(data.getHours()).padStart(2, "0");
+  return `Contagem até a prova · ${dia}/${mes}/${data.getFullYear()} às ${hora}h`;
+}
+
+function formatarContagem(msRestante) {
+  const totalSegundos = Math.floor(msRestante / 1000);
+  const horas = Math.floor(totalSegundos / 3600);
+  const minutos = Math.floor((totalSegundos % 3600) / 60);
+  const segundos = totalSegundos % 60;
+  const pad = (n) => String(n).padStart(2, "0");
+  return `${pad(horas)}:${pad(minutos)}:${pad(segundos)}`;
+}
+
+function atualizarContador(turma) {
+  const clockEl = document.getElementById("countdown-clock-" + turma);
+  if (!clockEl) return;
+
+  const msRestante = new Date(PROVAS[turma]).getTime() - Date.now();
+
+  if (msRestante <= 0) {
+    clockEl.textContent = "Prova encerrada";
+    clockEl.classList.add("encerrado");
+    return;
+  }
+
+  clockEl.textContent = formatarContagem(msRestante);
+}
+
+function iniciarContadores() {
+  Object.keys(PROVAS).forEach((turma) => {
+    document.getElementById("countdown-label-" + turma).textContent = formatarDataProva(PROVAS[turma]);
+    atualizarContador(turma);
+  });
+
+  setInterval(() => Object.keys(PROVAS).forEach(atualizarContador), 1000);
+}
 
 function ordenarPorNome(nomes) {
   return [...nomes].sort((a, b) => a.localeCompare(b, "pt-BR"));
@@ -63,6 +104,7 @@ function ativarAba(turmaAlvo) {
 
 function init() {
   Object.keys(ALUNOS).forEach(renderPanel);
+  iniciarContadores();
 
   document.querySelectorAll(".tab-btn").forEach((botao) => {
     botao.addEventListener("click", () => ativarAba(botao.dataset.tab));
