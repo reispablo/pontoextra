@@ -12,11 +12,11 @@ function formatarDataProva(iso) {
 function formatarContagem(msRestante) {
   const totalSegundos = Math.floor(msRestante / 1000);
   const dias = Math.floor(totalSegundos / 86400);
-  const horas = Math.floor((totalSegundos % 86400) / 3600);
+  const horasTotais = Math.floor(totalSegundos / 3600); // total de horas até a prova, sem descontar os dias
   const minutos = Math.floor((totalSegundos % 3600) / 60);
   const segundos = totalSegundos % 60;
   const pad = (n) => String(n).padStart(2, "0");
-  const relogio = `${pad(horas)}:${pad(minutos)}:${pad(segundos)}`;
+  const relogio = `${pad(horasTotais)}:${pad(minutos)}:${pad(segundos)}`;
 
   if (dias <= 0) return relogio;
   const diasTexto = dias === 1 ? "1 dia" : `${dias} dias`;
