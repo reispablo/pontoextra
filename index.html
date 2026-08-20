@@ -1,429 +1,51 @@
-<title>Mural de Pontos Extras</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Mural de Pontos Extras</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="page">
+    <header class="hero">
+      <div class="eyebrow">Ponto Extra</div>
+      <h1>Mural de Pontos Extras</h1>
+      <p class="lede">Alunos que ganharam ponto extra, organizados por turma. Selecione uma aba para ver a lista.</p>
+    </header>
 
-<style>
-  :root {
-    --bg: #eef1ec;
-    --surface: #ffffff;
-    --surface-alt: #e2e7df;
-    --text: #1c2b24;
-    --text-muted: #5f6d63;
-    --border: #d4dbd0;
-    --accent: #b8842c;
-    --accent-strong: #8f6520;
-    --accent-soft: #f2e4c6;
+    <div class="tabs" role="tablist" aria-label="Turmas">
+      <button class="tab-btn" role="tab" data-tab="implantacao" aria-selected="true" id="tab-btn-implantacao" aria-controls="panel-implantacao">
+        Implantação <span class="tab-count" id="count-implantacao">0</span>
+      </button>
+      <button class="tab-btn" role="tab" data-tab="testes" aria-selected="false" id="tab-btn-testes" aria-controls="panel-testes">
+        Testes <span class="tab-count" id="count-testes">0</span>
+      </button>
+    </div>
 
-    --tab-implantacao: #2f5d50;
-    --tab-implantacao-soft: #dfe9e4;
-    --tab-testes: #5c4a8a;
-    --tab-testes-soft: #e7e2f2;
+    <section class="panel" data-tab="implantacao" data-active="true" role="tabpanel" id="panel-implantacao" aria-labelledby="tab-btn-implantacao">
+      <div class="panel-head">
+        <h2 class="panel-title">Implantação</h2>
+        <span class="panel-sub" id="sub-implantacao"></span>
+      </div>
+      <div id="list-implantacao"></div>
+    </section>
 
-    --shadow: 0 1px 2px rgba(28, 43, 36, 0.06), 0 8px 24px rgba(28, 43, 36, 0.06);
-  }
+    <section class="panel" data-tab="testes" role="tabpanel" id="panel-testes" aria-labelledby="tab-btn-testes">
+      <div class="panel-head">
+        <h2 class="panel-title">Testes</h2>
+        <span class="panel-sub" id="sub-testes"></span>
+      </div>
+      <div id="list-testes"></div>
+    </section>
 
-  @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) {
-      --bg: #141a17;
-      --surface: #1c2420;
-      --surface-alt: #232c27;
-      --text: #e7ede9;
-      --text-muted: #9aa89e;
-      --border: #2e3830;
-      --accent: #d9a94a;
-      --accent-strong: #f0c26e;
-      --accent-soft: #3a2f16;
-
-      --tab-implantacao: #6fae9b;
-      --tab-implantacao-soft: #1e2d29;
-      --tab-testes: #ac96e0;
-      --tab-testes-soft: #262038;
-
-      --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.35);
-    }
-  }
-
-  :root[data-theme="dark"] {
-    --bg: #141a17;
-    --surface: #1c2420;
-    --surface-alt: #232c27;
-    --text: #e7ede9;
-    --text-muted: #9aa89e;
-    --border: #2e3830;
-    --accent: #d9a94a;
-    --accent-strong: #f0c26e;
-    --accent-soft: #3a2f16;
-
-    --tab-implantacao: #6fae9b;
-    --tab-implantacao-soft: #1e2d29;
-    --tab-testes: #ac96e0;
-    --tab-testes-soft: #262038;
-
-    --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.35);
-  }
-
-  * { box-sizing: border-box; }
-
-  body {
-    margin: 0;
-    background: var(--bg);
-    color: var(--text);
-    font-family: "Work Sans", ui-sans-serif, system-ui, sans-serif;
-    -webkit-font-smoothing: antialiased;
-  }
-
-  .page {
-    max-width: 780px;
-    margin: 0 auto;
-    padding: 56px 24px 96px;
-  }
-
-  header.hero {
-    margin-bottom: 40px;
-  }
-
-  .eyebrow {
-    font-family: "IBM Plex Mono", ui-monospace, monospace;
-    font-size: 0.75rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--accent-strong);
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 14px;
-  }
-
-  .eyebrow::before {
-    content: "";
-    width: 20px;
-    height: 1px;
-    background: var(--accent-strong);
-  }
-
-  h1 {
-    font-family: "Fraunces", ui-serif, Georgia, serif;
-    font-weight: 600;
-    font-size: clamp(2rem, 4vw, 2.6rem);
-    line-height: 1.1;
-    letter-spacing: -0.01em;
-    margin: 0 0 12px;
-    text-wrap: balance;
-  }
-
-  .lede {
-    color: var(--text-muted);
-    font-size: 1.05rem;
-    line-height: 1.55;
-    max-width: 58ch;
-    margin: 0;
-  }
-
-  /* Tabs */
-  .tabs {
-    display: flex;
-    gap: 4px;
-    padding: 4px;
-    background: var(--surface-alt);
-    border-radius: 12px;
-    border: 1px solid var(--border);
-    margin-bottom: 28px;
-  }
-
-  .tab-btn {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    padding: 13px 16px;
-    border: none;
-    border-radius: 9px;
-    background: transparent;
-    color: var(--text-muted);
-    font-family: inherit;
-    font-size: 0.95rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
-  }
-
-  .tab-btn:hover {
-    color: var(--text);
-  }
-
-  .tab-btn:focus-visible {
-    outline: 2px solid var(--accent);
-    outline-offset: 2px;
-  }
-
-  .tab-count {
-    font-family: "IBM Plex Mono", ui-monospace, monospace;
-    font-size: 0.78rem;
-    font-weight: 500;
-    padding: 2px 8px;
-    border-radius: 999px;
-    background: var(--surface);
-    color: var(--text-muted);
-  }
-
-  .tab-btn[aria-selected="true"] {
-    background: var(--surface);
-    color: var(--text);
-    box-shadow: var(--shadow);
-  }
-
-  .tab-btn[data-tab="implantacao"][aria-selected="true"] {
-    color: var(--tab-implantacao);
-  }
-  .tab-btn[data-tab="implantacao"][aria-selected="true"] .tab-count {
-    background: var(--tab-implantacao-soft);
-    color: var(--tab-implantacao);
-  }
-
-  .tab-btn[data-tab="testes"][aria-selected="true"] {
-    color: var(--tab-testes);
-  }
-  .tab-btn[data-tab="testes"][aria-selected="true"] .tab-count {
-    background: var(--tab-testes-soft);
-    color: var(--tab-testes);
-  }
-
-  /* Panel */
-  .panel {
-    display: none;
-  }
-  .panel[data-active="true"] {
-    display: block;
-    animation: rise 0.2s ease;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .panel[data-active="true"] { animation: none; }
-  }
-
-  @keyframes rise {
-    from { opacity: 0; transform: translateY(4px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .panel-head {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    margin-bottom: 14px;
-    padding: 0 4px;
-  }
-
-  .panel-title {
-    font-family: "Fraunces", ui-serif, Georgia, serif;
-    font-size: 1.15rem;
-    font-weight: 600;
-    margin: 0;
-  }
-
-  .panel[data-tab="implantacao"] .panel-title { color: var(--tab-implantacao); }
-  .panel[data-tab="testes"] .panel-title { color: var(--tab-testes); }
-
-  .panel-sub {
-    font-size: 0.85rem;
-    color: var(--text-muted);
-  }
-
-  .roster {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    overflow: hidden;
-    box-shadow: var(--shadow);
-  }
-
-  .roster li {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    padding: 14px 18px;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .roster li:last-child {
-    border-bottom: none;
-  }
-
-  .roster .idx {
-    font-family: "IBM Plex Mono", ui-monospace, monospace;
-    font-size: 0.8rem;
-    color: var(--text-muted);
-    width: 1.6em;
-    flex-shrink: 0;
-    text-align: right;
-    font-variant-numeric: tabular-nums;
-  }
-
-  .roster .name {
-    flex: 1;
-    font-size: 0.98rem;
-    font-weight: 500;
-  }
-
-  .roster .badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    font-family: "IBM Plex Mono", ui-monospace, monospace;
-    font-size: 0.72rem;
-    font-weight: 500;
-    letter-spacing: 0.02em;
-    color: var(--accent-strong);
-    background: var(--accent-soft);
-    padding: 4px 10px;
-    border-radius: 999px;
-    white-space: nowrap;
-  }
-
-  .roster .badge::before {
-    content: "★";
-    font-size: 0.85em;
-  }
-
-  /* Empty state */
-  .empty {
-    padding: 48px 24px;
-    text-align: center;
-    border: 1.5px dashed var(--border);
-    border-radius: 14px;
-    background: var(--surface);
-    color: var(--text-muted);
-  }
-
-  .empty p {
-    margin: 0 auto;
-    max-width: 40ch;
-    line-height: 1.5;
-    font-size: 0.92rem;
-  }
-
-  .empty .glyph {
-    font-size: 1.6rem;
-    margin-bottom: 10px;
-    display: block;
-  }
-
-  footer.note {
-    margin-top: 32px;
-    padding: 0 4px;
-    font-size: 0.8rem;
-    color: var(--text-muted);
-  }
-</style>
-
-<div class="page">
-  <header class="hero">
-    <div class="eyebrow">Ponto Extra</div>
-    <h1>Mural de Pontos Extras</h1>
-    <p class="lede">Alunos que ganharam ponto extra, organizados por turma. Selecione uma aba para ver a lista.</p>
-  </header>
-
-  <div class="tabs" role="tablist" aria-label="Turmas">
-    <button class="tab-btn" role="tab" data-tab="implantacao" aria-selected="true" id="tab-btn-implantacao" aria-controls="panel-implantacao">
-      Implantação <span class="tab-count" id="count-implantacao">0</span>
-    </button>
-    <button class="tab-btn" role="tab" data-tab="testes" aria-selected="false" id="tab-btn-testes" aria-controls="panel-testes">
-      Testes <span class="tab-count" id="count-testes">0</span>
-    </button>
+    <footer class="note">Atualizado conforme os nomes forem enviados.</footer>
   </div>
 
-  <section class="panel" data-tab="implantacao" data-active="true" role="tabpanel" id="panel-implantacao" aria-labelledby="tab-btn-implantacao">
-    <div class="panel-head">
-      <h2 class="panel-title">Implantação</h2>
-      <span class="panel-sub" id="sub-implantacao"></span>
-    </div>
-    <div id="list-implantacao"></div>
-  </section>
-
-  <section class="panel" data-tab="testes" role="tabpanel" id="panel-testes" aria-labelledby="tab-btn-testes">
-    <div class="panel-head">
-      <h2 class="panel-title">Testes</h2>
-      <span class="panel-sub" id="sub-testes"></span>
-    </div>
-    <div id="list-testes"></div>
-  </section>
-
-  <footer class="note">Atualizado conforme os nomes forem enviados.</footer>
-</div>
-
-<script>
-  // ---- Dados: adicione os nomes aqui ----
-  const alunos = {
-    implantacao: [
-      "Lucas Vinicius Furtado",
-      "Vitor Hugo Soares da Silva",
-      "Gabriella Galdino",
-      "Julia de Andrade Schoepping",
-      "Luis Miguel dos Santos",
-      "Cristian Lucas Acordi",
-    ],
-    testes: [
-      "Ulf Gunnar Silva Pettersson",
-      "Igor Flores",
-      "Danilo da Silva Doebber",
-      "Heloiza Camargo",
-      "Uriel Langer Pagano",
-      "Raquel Pinheiro da Costa",
-      "Pedro Lucas Rodrigues",
-      "Ruan Guilherme Rodrigues Barbosa",
-      "Joao Gabriel Poteriko",
-      "Miguel Linhares de Jesus",
-    ],
-  };
-  // ----------------------------------------
-
-  function renderPanel(turma) {
-    const nomes = [...alunos[turma]].sort((a, b) => a.localeCompare(b, "pt-BR"));
-    const listEl = document.getElementById("list-" + turma);
-    const countEl = document.getElementById("count-" + turma);
-    const subEl = document.getElementById("sub-" + turma);
-
-    countEl.textContent = nomes.length;
-
-    if (nomes.length === 0) {
-      subEl.textContent = "";
-      listEl.innerHTML = `
-        <div class="empty">
-          <span class="glyph">☆</span>
-          <p>Ainda não há nomes cadastrados nesta turma. Assim que forem enviados, aparecem aqui.</p>
-        </div>`;
-      return;
-    }
-
-    subEl.textContent = nomes.length === 1 ? "1 aluno" : nomes.length + " alunos";
-    listEl.innerHTML = `
-      <ul class="roster">
-        ${nomes.map((nome, i) => `
-          <li>
-            <span class="idx">${String(i + 1).padStart(2, "0")}</span>
-            <span class="name">${nome}</span>
-            <span class="badge">extra</span>
-          </li>`).join("")}
-      </ul>`;
-  }
-
-  renderPanel("implantacao");
-  renderPanel("testes");
-
-  document.querySelectorAll(".tab-btn").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      const target = btn.dataset.tab;
-      document.querySelectorAll(".tab-btn").forEach((b) => b.setAttribute("aria-selected", String(b.dataset.tab === target)));
-      document.querySelectorAll(".panel").forEach((p) => {
-        if (p.dataset.tab === target) p.setAttribute("data-active", "true");
-        else p.removeAttribute("data-active");
-      });
-    });
-  });
-</script>
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

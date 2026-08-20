@@ -7,12 +7,21 @@ Mural com a lista de alunos que ganharam ponto extra, separados por turma.
 - **Implantação**
 - **Testes**
 
+## Estrutura do projeto
+
+```
+index.html       estrutura da página
+css/style.css     estilos e temas (claro/escuro)
+js/data.js        lista de alunos por turma
+js/app.js         renderização e controle das abas
+```
+
 ## Atualizar os nomes
 
-Os nomes ficam no array `alunos` dentro de [`index.html`](index.html), próximo ao final do arquivo:
+Os nomes ficam no objeto `ALUNOS` em [`js/data.js`](js/data.js):
 
 ```js
-const alunos = {
+const ALUNOS = {
   implantacao: [
     "Nome do aluno",
   ],
