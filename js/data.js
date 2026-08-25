@@ -16,6 +16,9 @@ const ALUNOS = {
     "Julia de Andrade Schoepping",
     "Luis Miguel dos Santos",
     "Cristian Lucas Acordi",
+    "Victor B",
+    "Marcos",
+    "Matheus"
   ],
   testes: [
     "Ulf Gunnar Silva Pettersson",
