@@ -4,6 +4,20 @@
   <meta charset="UTF-8">
   <title>Mural de Pontos Extras</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" id="theme-color" content="#eef1ec">
+  <script>
+    (() => {
+      let temaSalvo = null;
+      try {
+        temaSalvo = localStorage.getItem("ponto-extra-tema");
+      } catch (erro) {
+        // Alguns navegadores bloqueiam o armazenamento ao abrir via file://.
+      }
+      const temaInicial = temaSalvo || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+      document.documentElement.dataset.theme = temaInicial;
+    })();
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
@@ -12,7 +26,13 @@
 <body>
   <div class="page">
     <header class="hero">
-      <div class="eyebrow">Ponto Extra</div>
+      <div class="hero-top">
+        <div class="eyebrow">Ponto Extra</div>
+        <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Alternar tema">
+          <span class="theme-icon" aria-hidden="true"></span>
+          <span class="theme-label"></span>
+        </button>
+      </div>
       <h1>Mural de Pontos Extras</h1>
     </header>
 

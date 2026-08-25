@@ -1,6 +1,48 @@
 // Renderização do mural de pontos extras e controle das abas.
 // Depende dos objetos globais ALUNOS e PROVAS definidos em data.js.
 
+const CHAVE_TEMA = "ponto-extra-tema";
+const CORES_TEMA = {
+  light: "#eef1ec",
+  dark: "#141a17",
+};
+
+function temaAtual() {
+  return document.documentElement.dataset.theme === "dark" ? "dark" : "light";
+}
+
+function atualizarControleTema(tema) {
+  const toggle = document.getElementById("theme-toggle");
+  const proximoTema = tema === "dark" ? "light" : "dark";
+
+  toggle.querySelector(".theme-icon").textContent = tema === "dark" ? "☾" : "☀";
+  toggle.querySelector(".theme-label").textContent = tema === "dark" ? "Escuro" : "Claro";
+  toggle.setAttribute("aria-label", `Ativar tema ${proximoTema === "dark" ? "escuro" : "claro"}`);
+  toggle.setAttribute("aria-pressed", String(tema === "dark"));
+  document.getElementById("theme-color").content = CORES_TEMA[tema];
+}
+
+function aplicarTema(tema, persistir = false) {
+  document.documentElement.dataset.theme = tema;
+  atualizarControleTema(tema);
+
+  if (persistir) {
+    try {
+      localStorage.setItem(CHAVE_TEMA, tema);
+    } catch (erro) {
+      // O tema continua válido na sessão quando o armazenamento não está disponível.
+    }
+  }
+}
+
+function iniciarTema() {
+  aplicarTema(temaAtual());
+
+  document.getElementById("theme-toggle").addEventListener("click", () => {
+    aplicarTema(temaAtual() === "dark" ? "light" : "dark", true);
+  });
+}
+
 function formatarDataProva(iso) {
   const data = new Date(iso);
   const dia = String(data.getDate()).padStart(2, "0");
@@ -108,6 +150,7 @@ function ativarAba(turmaAlvo) {
 }
 
 function init() {
+  iniciarTema();
   Object.keys(ALUNOS).forEach(renderPanel);
   iniciarContadores();
 

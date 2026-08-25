@@ -49,3 +49,7 @@ Quando o horário passa, o contador exibe "Prova encerrada".
 ## Visualizar
 
 Abra o [`index.html`](index.html) diretamente no navegador, sem necessidade de build ou servidor.
+
+## Temas
+
+O botão no canto superior direito alterna entre os temas claro e escuro. Na primeira visita, a página segue a preferência do sistema; depois, mantém a opção escolhida no navegador.
