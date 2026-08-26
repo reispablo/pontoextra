@@ -15,13 +15,16 @@ css/style.css     estilos e temas (claro/escuro)
 js/data.js        lista de alunos por turma
 js/app.js         renderização e controle das abas
 implantação/      materiais disponíveis para download na aba Implantação
+testes/           materiais disponíveis para download na aba Testes
 ```
 
-## Materiais da turma de Implantação
+## Materiais das turmas
 
 O arquivo [`implantação/Aula_Revisao_Prova_1_a_4.html`](implantação/Aula_Revisao_Prova_1_a_4.html) pode ser baixado diretamente na aba **Implantação**.
 
-Como esta é uma página estática, ao adicionar outro material à pasta `implantação/`, inclua também um link para ele no bloco `.downloads` de [`index.html`](index.html).
+O arquivo [`testes/Revisao 09-09.html`](testes/Revisao%2009-09.html) pode ser baixado diretamente na aba **Testes**.
+
+Como esta é uma página estática, ao adicionar outro material às pastas `implantação/` ou `testes/`, inclua também um link para ele no bloco `.downloads` da turma correspondente em [`index.html`](index.html).
 
 ## Atualizar os nomes
 
