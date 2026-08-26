@@ -18,7 +18,10 @@ const ALUNOS = {
     "Cristian Lucas Acordi",
     "Victor Banruque Balland",
     "Marcos Alexandre Pereira",
-    "Matheus Pedreira dos Santos"
+    "Matheus Pedreira dos Santos",
+    "Vinicius de Jesus Arins",
+    "Henrique de Barros Magenis",
+    "Eduardo de Morais Pereira"
   ],
   testes: [
     "Ulf Gunnar Silva Pettersson",

@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aula de Revisão — Prova de Implantação de Sistemas</title>
+  <style>
+    :root{--blue:#005ca9;--dark:#17324d;--light:#eef6fb;--cyan:#047c91;--ok:#15803d;--warn:#d97706;--danger:#b91c1c;--purple:#6d28d9}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:Arial,sans-serif;color:var(--dark);background:#f4f7fa;line-height:1.55}
+    header{background:linear-gradient(125deg,#003f73,#006fb9 58%,#047c91);color:#fff;padding:54px 24px}.wrap,main{max-width:1120px;margin:auto}header h1{font-size:clamp(2rem,5vw,3.6rem);margin:10px 0}header p{font-size:1.2rem;max-width:900px}
+    nav{position:sticky;top:0;z-index:10;background:#fff;border-bottom:1px solid #d4e0e8;padding:10px;text-align:center}nav a{display:inline-block;color:var(--blue);font-weight:bold;text-decoration:none;padding:7px 10px}
+    main{padding:22px}.section{background:#fff;margin:20px 0;padding:30px;border-radius:14px;box-shadow:0 3px 14px #16324d18}.section h2{color:var(--blue);font-size:2rem;margin-top:0}.section h3{color:#154b73}.badge{display:inline-block;background:#ddecf7;color:#004d83;padding:5px 11px;border-radius:999px;font-weight:bold;font-size:.88rem}
+    .brief,.teacher,.warning,.success,.memory{padding:18px;border-radius:10px;margin:16px 0}.brief{background:#eaf5ff;border-left:6px solid var(--blue)}.teacher{background:#fff8df;border-left:6px solid var(--warn)}.warning{background:#fff0f0;border-left:6px solid var(--danger)}.success{background:#ecfdf3;border-left:6px solid var(--ok)}.memory{background:#f4efff;border-left:6px solid var(--purple)}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}.card{padding:18px;border:1px solid #d8e2ea;border-radius:12px;background:#fff}.card h3{margin-top:0;color:var(--blue)}.number{display:inline-grid;place-items:center;width:34px;height:34px;border-radius:50%;background:#dff5f8;color:#036477;font-weight:bold}
+    table{width:100%;border-collapse:collapse;margin:16px 0}th,td{border:1px solid #cad8e2;padding:10px;text-align:left;vertical-align:top}th{background:var(--blue);color:#fff}tr:nth-child(even){background:#f5f9fc}
+    .flow{display:flex;align-items:stretch;gap:10px;flex-wrap:wrap;margin:22px 0}.flow .card{flex:1;min-width:180px;border-top:6px solid var(--cyan)}.arrow{align-self:center;font-size:2rem;color:var(--blue)}
+    .quiz-item{border:1px solid #ccd9e2;border-radius:12px;padding:18px;margin:14px 0}.quiz-item legend{font-weight:bold;padding:0 6px}.quiz-item label{display:block;padding:6px 4px}.quiz-item.correct{border:2px solid var(--ok);background:#f0fdf4}.quiz-item.incorrect{border:2px solid var(--danger);background:#fff7f7}.feedback{font-weight:bold;margin-top:12px}.feedback.ok{color:var(--ok)}.feedback.bad{color:var(--danger)}
+    textarea{width:100%;min-height:90px;border:1px solid #9eb3c2;border-radius:8px;padding:10px;font:inherit}.btn{background:var(--blue);color:#fff;border:0;border-radius:8px;padding:11px 16px;font-weight:bold;cursor:pointer}.btn.secondary{background:#536b7d}.btn:focus-visible,nav a:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid #f59e0b;outline-offset:2px}
+    .presentation-controls{display:none;position:fixed;bottom:14px;left:50%;transform:translateX(-50%);background:#fff;padding:8px;border-radius:10px;box-shadow:0 3px 18px #0004;z-index:20;white-space:nowrap}.presentation-controls button{margin:0 4px}footer{text-align:center;padding:28px;color:#587087}
+    body.presenting nav,body.presenting footer,body.presenting header{display:none}body.presenting main{max-width:none;padding:0}body.presenting main>.section{display:none;min-height:100vh;margin:0;border-radius:0;box-shadow:none;padding:6vh 8vw}body.presenting main>.section.active{display:block}body.presenting .presentation-controls{display:block}
+    @media(max-width:720px){.section{padding:20px}.arrow{transform:rotate(90deg);width:100%;text-align:center}table{display:block;overflow-x:auto;font-size:.9rem}.presentation-controls{width:calc(100% - 20px);text-align:center}}
+    @media print{nav,.presentation-controls,.btn{display:none!important}.section{break-inside:avoid;box-shadow:none;border:1px solid #ddd}header{background:#fff;color:#17324d;padding:20px}.quiz-item{break-inside:avoid}}
+  </style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <span class="badge">Implantação de Sistemas • Revisão das Aulas 1 a 4</span>
+    <h1>Da escolha do método à decisão de liberar</h1>
+    <p>Revisão integrada de implantação, ambientes, cronograma, infraestrutura, segurança e Kanban para a prova.</p>
+    <button class="btn" type="button" onclick="startPresentation()">Iniciar apresentação</button>
+  </div>
+</header>
+<nav aria-label="Navegação da aula">
+  <a href="#mapa">Mapa</a><a href="#aula1">Aula 1</a><a href="#aula2">Aula 2</a><a href="#aula3">Aula 3</a><a href="#aula4">Aula 4</a><a href="#agil">Kanban</a><a href="#caso">Caso</a><a href="#quiz">Quiz</a><a href="#roteiro">Roteiro</a>
+</nav>
+<main>
+  <section class="section" id="mapa">
+    <span class="badge">Diagnóstico inicial • 15 min</span>
+    <h2>Uma implantação é uma sequência de decisões</h2>
+    <div class="brief"><strong>Situação:</strong> uma escola trocará o sistema acadêmico. A equipe já possui o software, mas ainda precisa decidir como implantar, onde testar, quando executar e se o ambiente pode receber a solução.</div>
+    <p>Em duplas, organizem estas ações na ordem em que devem ser pensadas:</p>
+    <ul><li>validar com usuários-chave;</li><li>escolher o método de implantação;</li><li>levantar capacidade, segurança e continuidade;</li><li>construir e testar inicialmente;</li><li>planejar atividades, dependências e janela;</li><li>liberar a operação oficial.</li></ul>
+    <div class="teacher"><strong>Orientação docente:</strong> aceite hipóteses neste momento. Retome a ordenação no estudo de caso para que a turma perceba a integração dos conteúdos.</div>
+  </section>
+
+  <section class="section">
+    <span class="badge">Visão geral • 25 min</span>
+    <h2>O mapa da revisão</h2>
+    <div class="flow">
+      <div class="card"><span class="number">1</span><h3>Método</h3><p>Como reduzir o risco da troca?</p></div><span class="arrow">→</span>
+      <div class="card"><span class="number">2</span><h3>Ambientes</h3><p>Onde construir, validar e operar?</p></div><span class="arrow">→</span>
+      <div class="card"><span class="number">3</span><h3>Plano</h3><p>Quem faz o quê, quando e após qual dependência?</p></div><span class="arrow">→</span>
+      <div class="card"><span class="number">4</span><h3>Condição</h3><p>Há capacidade, segurança e evidências para avançar?</p></div>
+    </div>
+    <div class="memory"><strong>Frase-guia:</strong> implantar é colocar a solução em funcionamento com preparação, configuração, validação, orientação e controle de risco.</div>
+    <div class="warning"><strong>Atenção às pegadinhas:</strong> implantação não é apenas programar nem apenas instalar; homologação não é produção; backup existente não significa recuperação comprovada; atraso não autoriza retirar testes.</div>
+  </section>
+
+  <section class="section" id="aula1">
+    <span class="badge">Aula 1 • 30 min</span>
+    <h2>Implantar é entregar a solução funcionando</h2>
+    <table>
+      <thead><tr><th>Desenvolvimento</th><th>Implantação</th></tr></thead>
+      <tbody><tr><td>Cria funcionalidades, programa, corrige falhas e entrega código.</td><td>Prepara o ambiente, instala, configura, valida, orienta usuários e entrega a operação funcionando.</td></tr></tbody>
+    </table>
+    <h3>Quatro métodos de implantação</h3>
+    <table>
+      <thead><tr><th>Método</th><th>Como funciona</th><th>Vantagem</th><th>Risco ou custo</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Big Bang</strong></td><td>Troca tudo de uma vez.</td><td>Rápido.</td><td>Impacto alto se algo falhar.</td></tr>
+        <tr><td><strong>Paralelo</strong></td><td>Sistema antigo e novo funcionam juntos por um período.</td><td>Favorece continuidade e comparação.</td><td>Mais esforço e custo.</td></tr>
+        <tr><td><strong>Piloto</strong></td><td>Começa em um setor ou grupo limitado.</td><td>Aprende com risco controlado.</td><td>Expansão mais lenta.</td></tr>
+        <tr><td><strong>Gradual</strong></td><td>Libera por etapas, módulos ou unidades.</td><td>Maior controle.</td><td>Exige coordenação por mais tempo.</td></tr>
+      </tbody>
+    </table>
+    <div class="teacher"><strong>Pergunta de aplicação:</strong> uma empresa começa somente no setor financeiro e expande após avaliar os resultados. Qual é o método e qual risco ele reduz?</div>
+  </section>
+
+  <section class="section" id="aula2">
+    <span class="badge">Aula 2 • 30 min</span>
+    <h2>DEV constrói, HOM valida, PROD opera</h2>
+    <table>
+      <thead><tr><th>Aspecto</th><th>DEV</th><th>HOM</th><th>PROD</th></tr></thead>
+      <tbody>
+        <tr><td>Finalidade</td><td>Construção e testes iniciais.</td><td>Testes integrados, validação e aceite.</td><td>Operação oficial.</td></tr>
+        <tr><td>Pessoas</td><td>Equipe técnica.</td><td>Testadores, cliente e usuários-chave.</td><td>Usuários reais.</td></tr>
+        <tr><td>Dados</td><td>Fictícios.</td><td>Fictícios ou anonimizados.</td><td>Reais e protegidos.</td></tr>
+        <tr><td>Mudanças</td><td>Frequentes; pode haver instabilidade.</td><td>Controladas; semelhante a produção.</td><td>Planejadas, estáveis e monitoradas.</td></tr>
+      </tbody>
+    </table>
+    <div class="flow"><div class="card"><h3>DEV</h3><p>Construir e testar.</p></div><span class="arrow">→</span><div class="card"><h3>HOM</h3><p>Validar e obter aceite.</p></div><span class="arrow">→</span><div class="card"><h3>PROD</h3><p>Liberar de forma planejada.</p></div></div>
+    <div class="warning"><strong>Risco grave:</strong> HOM apontar para o banco de PROD. Um teste pode alterar ou excluir dados reais. Interrompa o teste e corrija a configuração.</div>
+    <div class="memory"><strong>Importante:</strong> separar ambientes reduz riscos, mas não substitui planejamento, backup, testes e possibilidade de retorno.</div>
+  </section>
+
+  <section class="section" id="aula3">
+    <span class="badge">Aula 3 • 35 min</span>
+    <h2>Uma lista só vira cronograma quando pode ser executada</h2>
+    <table>
+      <thead><tr><th>Campo</th><th>Pergunta</th><th>Exemplo de evidência</th></tr></thead>
+      <tbody>
+        <tr><td>Fase e atividade</td><td>O que será feito e em qual momento?</td><td>Aplicação instalada e versão registrada.</td></tr>
+        <tr><td>Início e término</td><td>Quando começa e quando acaba?</td><td>Registro de horário.</td></tr>
+        <tr><td>Dependência</td><td>O que precisa terminar antes?</td><td>Backup e infraestrutura aprovados.</td></tr>
+        <tr><td>Responsável</td><td>Quem responde pela entrega?</td><td>Nome ou papel designado.</td></tr>
+        <tr><td>Custo</td><td>O plano cabe no orçamento?</td><td>Estimativa e total calculado.</td></tr>
+        <tr><td>Evidência</td><td>Como outra pessoa comprova a conclusão?</td><td>Relatório, log, aceite ou captura.</td></tr>
+      </tbody>
+    </table>
+    <h3>Incidente: a instalação leva duas horas a mais</h3>
+    <ol><li>registrar o incidente e preservar o plano original;</li><li>recalcular os horários das atividades dependentes;</li><li>manter backup, testes e aceite;</li><li>verificar janela, orçamento e margem;</li><li>comunicar o impacto e registrar o plano revisado.</li></ol>
+    <div class="warning"><strong>Condutas incorretas:</strong> apagar o plano original, ignorar dependências, manter horários impossíveis ou retirar validações obrigatórias.</div>
+    <div class="success"><strong>Depois da liberação:</strong> o cronograma ainda deve incluir monitoramento e operação assistida.</div>
+  </section>
+
+  <section class="section" id="aula4">
+    <span class="badge">Aula 4 • 35 min</span>
+    <h2>Antes de instalar: perguntar, medir, comparar e tratar lacunas</h2>
+    <div class="grid">
+      <div class="card"><h3>Hardware</h3><p>CPU, memória, armazenamento, servidor e equipamentos.</p></div>
+      <div class="card"><h3>Software</h3><p>Sistema operacional, runtime, banco e versões suportadas.</p></div>
+      <div class="card"><h3>Rede</h3><p>Conectividade, DNS, portas, internet e latência.</p></div>
+      <div class="card"><h3>Dados</h3><p>Volume, crescimento, retenção, backup e restauração.</p></div>
+      <div class="card"><h3>Pessoas e acesso</h3><p>Usuários, simultaneidade, perfis e responsáveis.</p></div>
+      <div class="card"><h3>Continuidade</h3><p>Disponibilidade, monitoramento, energia e recuperação.</p></div>
+    </div>
+    <div class="brief"><strong>Dimensionamento:</strong> a quantidade de usuários simultâneos ajuda a estimar processamento, memória e conexões. Volume, crescimento e criticidade também precisam ser considerados.</div>
+    <h3>Controles mínimos de segurança</h3>
+    <ul><li>contas individuais e menor privilégio;</li><li>HTTPS e somente portas necessárias;</li><li>versões suportadas e atualizações controladas;</li><li>backup protegido com restauração testada;</li><li>logs e monitoramento sem registrar senhas ou segredos.</li></ul>
+    <table>
+      <thead><tr><th>Parecer</th><th>Quando usar</th></tr></thead>
+      <tbody><tr><td>Aprovado</td><td>Requisitos críticos atendidos e comprovados.</td></tr><tr><td>Aprovado com ressalvas</td><td>Pendências não críticas têm ação, prazo e responsável.</td></tr><tr><td>Bloqueado</td><td>Uma lacuna crítica torna a instalação insegura ou inviável.</td></tr></tbody>
+    </table>
+    <div class="warning"><strong>Backup sem teste de restauração é lacuna crítica:</strong> possuir arquivos não prova que os dados podem ser recuperados.</div>
+  </section>
+
+  <section class="section" id="agil">
+    <span class="badge">Aula extra • 20 min</span>
+    <h2>Kanban: visualizar o fluxo e limitar o trabalho em andamento</h2>
+    <div class="flow"><div class="card"><h3>A fazer</h3><p>Itens priorizados que ainda não começaram.</p></div><span class="arrow">→</span><div class="card"><h3>Em andamento</h3><p>Trabalho iniciado, sujeito ao limite de WIP.</p></div><span class="arrow">→</span><div class="card"><h3>Concluído</h3><p>Itens finalizados conforme o critério combinado.</p></div></div>
+    <div class="grid">
+      <div class="card"><h3>Quadro visual</h3><p>Todos enxergam o estado das tarefas.</p></div>
+      <div class="card"><h3>Fluxo contínuo</h3><p>Não depende de Sprints fixas.</p></div>
+      <div class="card"><h3>Limite de WIP</h3><p>Evita iniciar tarefas demais e expõe gargalos.</p></div>
+    </div>
+    <div class="memory"><strong>Não confunda:</strong> Scrum organiza o trabalho em Sprints e papéis definidos; Kanban usa fluxo contínuo, quadro visual e limite de WIP; Scrumban combina práticas dos dois.</div>
+  </section>
+
+  <section class="section" id="caso">
+    <span class="badge">Oficina integrada • 25 min</span>
+    <h2>Decisão de implantação da Escola Caminhos</h2>
+    <div class="brief"><strong>Cenário:</strong> a escola substituirá o sistema acadêmico antes do início das aulas. Há muitos acessos simultâneos, notas e dados pessoais. O servidor possui capacidade inferior à recomendada e existem cópias de backup, mas nenhuma restauração foi comprovada.</div>
+    <p>Em grupos de 3 a 5, elaborem uma orientação técnica com cinco blocos:</p>
+    <ol>
+      <li><strong>Método:</strong> escolha e justifique com base em continuidade e risco.</li>
+      <li><strong>Ambientes:</strong> explique o uso de DEV, HOM e PROD, incluindo dados e usuários.</li>
+      <li><strong>Planejamento:</strong> indique pelo menos duas providências verificáveis.</li>
+      <li><strong>Infraestrutura e segurança:</strong> indique pelo menos duas verificações ou correções.</li>
+      <li><strong>Parecer:</strong> aprove, aprove com ressalvas ou bloqueie — e justifique.</li>
+    </ol>
+    <label for="caseAnswer"><strong>Registro da equipe</strong></label>
+    <textarea id="caseAnswer" placeholder="Escreva a orientação em um parágrafo técnico e objetivo."></textarea>
+    <div class="teacher"><strong>Correção em pares:</strong> cada grupo verifica se a resposta do outro contém os cinco blocos, se o parecer é coerente com as lacunas e se há justificativas, não apenas palavras soltas.</div>
+  </section>
+
+  <section class="section" id="quiz">
+    <span class="badge">Quiz formativo • 10 min</span>
+    <h2>Verifique o aprendizado</h2>
+    <form id="quizForm">
+      <fieldset class="quiz-item" data-answer="b"><legend>1. Qual ação melhor representa uma implantação completa?</legend><label><input type="radio" name="q1" value="a"> Entregar somente o código-fonte.</label><label><input type="radio" name="q1" value="b"> Preparar, configurar, validar e colocar a solução em operação.</label><label><input type="radio" name="q1" value="c"> Comprar equipamentos sem analisar requisitos.</label></fieldset>
+      <fieldset class="quiz-item" data-answer="c"><legend>2. A liberação começa em uma única unidade e será expandida após avaliação. Qual é o método?</legend><label><input type="radio" name="q2" value="a"> Big Bang.</label><label><input type="radio" name="q2" value="b"> Paralelo.</label><label><input type="radio" name="q2" value="c"> Piloto.</label></fieldset>
+      <fieldset class="quiz-item" data-answer="b"><legend>3. Onde usuários-chave devem validar uma versão antes da operação oficial?</legend><label><input type="radio" name="q3" value="a"> DEV.</label><label><input type="radio" name="q3" value="b"> HOM.</label><label><input type="radio" name="q3" value="c"> PROD.</label></fieldset>
+      <fieldset class="quiz-item" data-answer="c"><legend>4. Qual configuração mistura ambientes e ameaça dados reais?</legend><label><input type="radio" name="q4" value="a"> DEV com dados fictícios.</label><label><input type="radio" name="q4" value="b"> PROD com usuários reais.</label><label><input type="radio" name="q4" value="c"> HOM conectado ao banco de PROD.</label></fieldset>
+      <fieldset class="quiz-item" data-answer="a"><legend>5. Qual conjunto torna um cronograma executável?</legend><label><input type="radio" name="q5" value="a"> Horários, dependências, responsável, custo e evidência.</label><label><input type="radio" name="q5" value="b"> Apenas nomes das tarefas.</label><label><input type="radio" name="q5" value="c"> Somente data de entrada em produção.</label></fieldset>
+      <fieldset class="quiz-item" data-answer="b"><legend>6. Um atraso afeta as atividades seguintes. O que fazer?</legend><label><input type="radio" name="q6" value="a"> Retirar os testes para ganhar tempo.</label><label><input type="radio" name="q6" value="b"> Recalcular dependências, preservar validações e registrar antes/depois.</label><label><input type="radio" name="q6" value="c"> Manter horários que não podem mais ser cumpridos.</label></fieldset>
+      <fieldset class="quiz-item" data-answer="a"><legend>7. O número de acessos simultâneos apoia qual decisão?</legend><label><input type="radio" name="q7" value="a"> Dimensionar processamento, memória e conexões.</label><label><input type="radio" name="q7" value="b"> Escolher as cores da interface.</label><label><input type="radio" name="q7" value="c"> Eliminar monitoramento.</label></fieldset>
+      <fieldset class="quiz-item" data-answer="c"><legend>8. Há arquivos de backup, mas a restauração nunca foi testada. Qual parecer técnico?</legend><label><input type="radio" name="q8" value="a"> Requisito atendido.</label><label><input type="radio" name="q8" value="b"> Pendência sem relação com a implantação.</label><label><input type="radio" name="q8" value="c"> Lacuna crítica que precisa ser comprovada antes da liberação.</label></fieldset>
+      <fieldset class="quiz-item" data-answer="b"><legend>9. O que caracteriza o Kanban?</legend><label><input type="radio" name="q9" value="a"> Sprints obrigatórias e papéis fixos.</label><label><input type="radio" name="q9" value="b"> Quadro visual, fluxo contínuo e limite de WIP.</label><label><input type="radio" name="q9" value="c"> Entrega somente ao fim do projeto.</label></fieldset>
+      <button class="btn" type="button" onclick="gradeQuiz()">Corrigir quiz</button>
+      <button class="btn secondary" type="reset" onclick="resetQuiz()">Limpar</button>
+      <p id="quizFeedback" class="feedback" aria-live="polite"></p>
+    </form>
+  </section>
+
+  <section class="section" id="roteiro">
+    <span class="badge">Planejamento docente</span>
+    <h2>Roteiro de 4 horas</h2>
+    <table><thead><tr><th>Tempo</th><th>Etapa</th><th>Atividade</th></tr></thead><tbody>
+      <tr><td>15 min</td><td>Diagnóstico</td><td>Ordenação das decisões de implantação.</td></tr>
+      <tr><td>25 min</td><td>Mapa integrado</td><td>Sequência método → ambientes → plano → condição.</td></tr>
+      <tr><td>30 min</td><td>Aula 1</td><td>Conceito, papéis e métodos de implantação.</td></tr>
+      <tr><td>30 min</td><td>Aula 2</td><td>DEV, HOM, PROD e mistura de ambientes.</td></tr>
+      <tr><td>10 min</td><td>Intervalo</td><td>Pausa.</td></tr>
+      <tr><td>35 min</td><td>Aula 3</td><td>Cronograma executável e replanejamento.</td></tr>
+      <tr><td>35 min</td><td>Aula 4</td><td>Infraestrutura, segurança, evidências e parecer.</td></tr>
+      <tr><td>20 min</td><td>Aula extra</td><td>Kanban e comparação breve com Scrum/Scrumban.</td></tr>
+      <tr><td>25 min</td><td>Oficina</td><td>Resposta integrada sobre a Escola Caminhos.</td></tr>
+      <tr><td>10 min</td><td>Quiz</td><td>Nove questões formativas e correção comentada.</td></tr>
+      <tr><td>5 min</td><td>Fechamento</td><td>Registro individual do ponto que precisa rever.</td></tr>
+      <tr><th>240 min</th><th colspan="2">Total</th></tr>
+    </tbody></table>
+  </section>
+
+  <section class="section">
+    <span class="badge">Fechamento • 5 min</span>
+    <h2>Checklist antes da prova</h2>
+    <ul><li>Consigo diferenciar desenvolvimento, instalação e implantação?</li><li>Reconheço Big Bang, paralelo, piloto e gradual em situações reais?</li><li>Explico pessoas, dados e finalidade de DEV, HOM e PROD?</li><li>Sei quais campos tornam um cronograma executável e como replanejar?</li><li>Consigo justificar capacidade, segurança, evidências e parecer?</li><li>Reconheço quadro visual, fluxo contínuo e limite de WIP no Kanban?</li></ul>
+    <div class="success"><strong>Estratégia para a discursiva:</strong> organize a resposta em cinco blocos — método, ambientes, plano, infraestrutura/segurança e parecer justificado.</div>
+  </section>
+</main>
+<div class="presentation-controls" role="group" aria-label="Controles da apresentação">
+  <button class="btn" type="button" onclick="changePage(-1)" aria-label="Página anterior">←</button>
+  <span id="counter">1 / 1</span>
+  <button class="btn" type="button" onclick="changePage(1)" aria-label="Próxima página">→</button>
+  <button class="btn secondary" type="button" onclick="stopPresentation()">Sair</button>
+</div>
+<footer>Aula de Revisão • Aulas 1 a 4 • Implantação de Sistemas</footer>
+<script>
+  const pages=[...document.querySelectorAll('main>.section')];let currentPage=0;
+  function showPage(){pages.forEach((page,index)=>page.classList.toggle('active',index===currentPage));document.getElementById('counter').textContent=(currentPage+1)+' / '+pages.length;}
+  function startPresentation(){document.body.classList.add('presenting');currentPage=0;showPage();}
+  function stopPresentation(){document.body.classList.remove('presenting');pages.forEach(page=>page.classList.remove('active'));}
+  function changePage(delta){currentPage=Math.max(0,Math.min(pages.length-1,currentPage+delta));showPage();}
+  document.addEventListener('keydown',event=>{if(!document.body.classList.contains('presenting'))return;if(event.key==='ArrowRight')changePage(1);if(event.key==='ArrowLeft')changePage(-1);if(event.key==='Escape')stopPresentation();});
+  function gradeQuiz(){
+    const items=[...document.querySelectorAll('.quiz-item')];let hits=0;let answered=0;
+    items.forEach(item=>{const selected=item.querySelector('input:checked');item.classList.remove('correct','incorrect');if(!selected)return;answered++;const ok=selected.value===item.dataset.answer;item.classList.add(ok?'correct':'incorrect');if(ok)hits++;});
+    const feedback=document.getElementById('quizFeedback');
+    if(answered<items.length){feedback.className='feedback bad';feedback.textContent='Responda todas as questões. Até agora: '+hits+' acerto(s) em '+answered+' respondida(s).';return;}
+    feedback.className='feedback '+(hits>=7?'ok':'bad');feedback.textContent=hits+' de '+items.length+' respostas corretas. '+(hits>=7?'Bom domínio; revise as questões marcadas em vermelho.':'Retome os blocos correspondentes às questões marcadas em vermelho.');
+  }
+  function resetQuiz(){document.querySelectorAll('.quiz-item').forEach(item=>item.classList.remove('correct','incorrect'));const feedback=document.getElementById('quizFeedback');feedback.className='feedback';feedback.textContent='';}
+</script>
+</body>
+</html>
