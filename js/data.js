@@ -21,10 +21,8 @@ const ALUNOS = {
     "Matheus Pedreira dos Santos",
     "Vinicius de Jesus Arins",
     "Henrique de Barros Magenis",
-    "Eduardo de Morais Pereira",
-    "lucas Henrique Alves",
-    "Bruno vieira",
-    "Laryssa Camilo Gosch",
+    "Eduardo de Morais Pereira"
+    
   ],
   testes: [
     "Ulf Gunnar Silva Pettersson",
@@ -37,5 +35,8 @@ const ALUNOS = {
     "Ruan Guilherme Rodrigues Barbosa",
     "Joao Gabriel Poteriko",
     "Miguel Linhares de Jesus",
+    "lucas Henrique Alves",
+    "Bruno vieira",
+    "Laryssa Camilo Gosch"
   ],
 };
