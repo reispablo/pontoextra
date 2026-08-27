@@ -2,7 +2,7 @@
 // O contador regressivo em app.js conta até esse instante.
 const PROVAS = {
   implantacao: "2026-09-08T19:00:00",
-  testes: "2026-09-09T19:00:00",
+  testes: "2026-09-16T19:00:00",
 };
 
 // Dados dos alunos com ponto extra, por turma.
@@ -21,7 +21,10 @@ const ALUNOS = {
     "Matheus Pedreira dos Santos",
     "Vinicius de Jesus Arins",
     "Henrique de Barros Magenis",
-    "Eduardo de Morais Pereira"
+    "Eduardo de Morais Pereira",
+    "lucas Henrique Alves",
+    "Bruno vieira",
+    "Laryssa Camilo Gosch",
   ],
   testes: [
     "Ulf Gunnar Silva Pettersson",
