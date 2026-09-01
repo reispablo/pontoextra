@@ -21,7 +21,10 @@ const ALUNOS = {
     "Matheus Pedreira dos Santos",
     "Vinicius de Jesus Arins",
     "Henrique de Barros Magenis",
-    "Eduardo de Morais Pereira"
+    "Eduardo de Morais Pereira",
+    "Daniel Hirt Avelino",
+    "Alison Rodrigo kohn",
+    "Diego Marx Silvera"
     
   ],
   testes: [
