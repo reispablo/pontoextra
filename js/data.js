@@ -24,7 +24,11 @@ const ALUNOS = {
     "Eduardo de Morais Pereira",
     "Daniel Hirt Avelino",
     "Alison Rodrigo kohn",
-    "Diego Marx Silvera"
+    "Diego Marx Silvera",
+    "Luiz Felipe de Araújo",
+    "Lovenita Roseme",
+    "kenji kaneko",
+    "Thayane Calistro"
     
   ],
   testes: [
