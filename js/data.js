@@ -44,6 +44,8 @@ const ALUNOS = {
     "Miguel Linhares de Jesus",
     "lucas Henrique Alves",
     "Bruno vieira",
-    "Laryssa Camilo Gosch"
+    "Laryssa Camilo Gosch",
+    "Bruna Monique da Silva",
+    "Rafaelly Cristini de Souza"
   ],
 };
