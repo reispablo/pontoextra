@@ -316,6 +316,80 @@ h1 {
   letter-spacing: normal;
 }
 
+/* Cronograma */
+.schedule {
+  margin-bottom: 14px;
+}
+
+.schedule-head {
+  margin-bottom: 10px;
+  padding: 0 4px;
+}
+
+.schedule-eyebrow {
+  display: block;
+  margin-bottom: 3px;
+  color: var(--tab-implantacao);
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.schedule h3 {
+  margin: 0;
+  font-family: "Fraunces", ui-serif, Georgia, serif;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.schedule-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.schedule-card {
+  display: grid;
+  align-content: start;
+  gap: 5px;
+  min-height: 112px;
+  padding: 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--tab-implantacao);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+}
+
+.schedule-card time {
+  color: var(--tab-implantacao);
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 1rem;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+.schedule-card span {
+  font-size: 0.92rem;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.schedule-card small {
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  line-height: 1.4;
+}
+
+.schedule-card-featured {
+  background: var(--tab-implantacao-soft);
+}
+
 /* Materiais para download */
 .downloads {
   display: flex;
@@ -494,6 +568,14 @@ footer.note {
 @media (max-width: 480px) {
   .page {
     padding: 36px 16px 64px;
+  }
+
+  .schedule-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .schedule-card {
+    min-height: auto;
   }
 
   .downloads {
