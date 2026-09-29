@@ -49,8 +49,8 @@ Cada aba mostra uma contagem regressiva até o horário de término da prova daq
 
 ```js
 const PROVAS = {
-  implantacao: "2026-09-08T19:00:00",
-  testes: "2026-09-16T19:00:00",
+  implantacao: "2026-10-20T19:00:00",
+  testes: "2026-11-11T19:00:00",
 };
 ```
 
