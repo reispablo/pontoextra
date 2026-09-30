@@ -1,0 +1,1102 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Revisão interativa das aulas 5, 6 e 7 de Implantação de Sistemas.">
+  <title>Revisão • Aulas 5 a 7 — Implantação de Sistemas</title>
+  <style>
+    :root {
+      --navy: #071b33;
+      --navy-2: #0d2d4d;
+      --blue: #0077b6;
+      --cyan: #00a8cc;
+      --ice: #eaf7fb;
+      --paper: #f7fafc;
+      --white: #ffffff;
+      --ink: #172b3d;
+      --muted: #587083;
+      --line: #d7e3ea;
+      --orange: #f59e0b;
+      --green: #138a55;
+      --red: #c33b32;
+      --purple: #7357c9;
+      --shadow: 0 18px 45px rgba(7, 27, 51, .11);
+      --radius: 18px;
+      --base-size: 16px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 76px; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--paper);
+      font: var(--base-size)/1.62 Arial, Helvetica, sans-serif;
+    }
+    button, input, textarea { font: inherit; }
+    button { cursor: pointer; }
+    a { color: var(--blue); }
+    code { font-family: Consolas, "Courier New", monospace; }
+    :focus-visible { outline: 3px solid var(--orange); outline-offset: 3px; }
+
+    .skip-link {
+      position: fixed;
+      top: -60px;
+      left: 16px;
+      z-index: 100;
+      padding: 10px 16px;
+      color: var(--white);
+      background: var(--navy);
+      border-radius: 0 0 8px 8px;
+    }
+    .skip-link:focus { top: 0; }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 62px;
+      padding: 8px clamp(16px, 4vw, 54px);
+      color: var(--white);
+      background: rgba(7, 27, 51, .97);
+      border-bottom: 1px solid rgba(255, 255, 255, .12);
+      backdrop-filter: blur(12px);
+    }
+    .brand { display: flex; align-items: center; gap: 12px; font-weight: 800; }
+    .brand-mark {
+      display: grid;
+      place-items: center;
+      width: 36px;
+      height: 36px;
+      color: var(--navy);
+      background: var(--cyan);
+      border-radius: 11px;
+      font-weight: 900;
+    }
+    .tools { display: flex; gap: 7px; }
+    .tool-btn {
+      min-width: 42px;
+      padding: 8px 11px;
+      color: var(--white);
+      background: transparent;
+      border: 1px solid rgba(255,255,255,.25);
+      border-radius: 10px;
+    }
+    .tool-btn:hover { background: rgba(255,255,255,.1); }
+
+    .reading-progress {
+      position: fixed;
+      top: 61px;
+      left: 0;
+      z-index: 35;
+      width: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--orange), var(--cyan));
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      min-height: 72vh;
+      display: grid;
+      align-items: center;
+      color: var(--white);
+      background:
+        radial-gradient(circle at 85% 18%, rgba(0,168,204,.35), transparent 24%),
+        radial-gradient(circle at 8% 90%, rgba(245,158,11,.20), transparent 22%),
+        linear-gradient(135deg, #06162b, #0b3457 62%, #075f7c);
+      padding: clamp(52px, 8vw, 110px) clamp(20px, 8vw, 110px);
+    }
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      opacity: .16;
+      background-image: linear-gradient(rgba(255,255,255,.16) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.16) 1px, transparent 1px);
+      background-size: 46px 46px;
+      mask-image: linear-gradient(to bottom, black, transparent);
+      pointer-events: none;
+    }
+    .hero-content { position: relative; z-index: 2; max-width: 1040px; }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 18px;
+      padding: 6px 12px;
+      color: #bfefff;
+      border: 1px solid rgba(191,239,255,.4);
+      border-radius: 999px;
+      font-size: .85rem;
+      font-weight: 800;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+    }
+    .hero h1 {
+      max-width: 900px;
+      margin: 0 0 18px;
+      font-size: clamp(2.55rem, 7vw, 5.5rem);
+      line-height: .98;
+      letter-spacing: -.045em;
+    }
+    .hero h1 span { color: #77def1; }
+    .hero p { max-width: 760px; margin: 0 0 28px; color: #d9e9f4; font-size: clamp(1.05rem, 2vw, 1.35rem); }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 11px 17px;
+      border: 1px solid transparent;
+      border-radius: 11px;
+      font-weight: 800;
+      text-decoration: none;
+      transition: transform .18s ease, box-shadow .18s ease;
+    }
+    .btn:hover { transform: translateY(-2px); }
+    .btn-primary { color: var(--navy); background: #7fe7f4; box-shadow: 0 9px 24px rgba(0,168,204,.24); }
+    .btn-secondary { color: var(--white); background: rgba(255,255,255,.08); border-color: rgba(255,255,255,.3); }
+    .btn-dark { color: var(--white); background: var(--navy); }
+    .btn-outline { color: var(--navy); background: var(--white); border-color: var(--line); }
+
+    .layout { display: grid; grid-template-columns: 250px minmax(0, 1fr); max-width: 1440px; margin: 0 auto; }
+    .side-nav {
+      position: sticky;
+      top: 66px;
+      align-self: start;
+      height: calc(100vh - 66px);
+      padding: 28px 18px;
+      overflow: auto;
+      background: var(--white);
+      border-right: 1px solid var(--line);
+    }
+    .side-nav p { margin: 0 10px 10px; color: var(--muted); font-size: .76rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+    .side-nav a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 3px 0;
+      padding: 9px 11px;
+      color: var(--muted);
+      border-radius: 9px;
+      font-size: .92rem;
+      font-weight: 700;
+      text-decoration: none;
+    }
+    .side-nav a:hover, .side-nav a.active { color: var(--navy); background: var(--ice); }
+    .nav-dot { width: 8px; height: 8px; flex: 0 0 auto; background: var(--line); border-radius: 50%; }
+    .side-nav a.active .nav-dot { background: var(--cyan); box-shadow: 0 0 0 4px rgba(0,168,204,.15); }
+
+    main { min-width: 0; padding: 0 clamp(18px, 5vw, 72px) 80px; }
+    .content-section { max-width: 1040px; margin: 0 auto; padding: 76px 0 18px; }
+    .section-kicker { margin: 0 0 8px; color: var(--blue); font-size: .82rem; font-weight: 900; letter-spacing: .09em; text-transform: uppercase; }
+    h2 { max-width: 850px; margin: 0 0 18px; color: var(--navy); font-size: clamp(2rem, 4vw, 3.1rem); line-height: 1.08; letter-spacing: -.025em; }
+    h3 { margin: 0 0 10px; color: var(--navy); font-size: 1.18rem; line-height: 1.25; }
+    .lead { max-width: 800px; margin: 0 0 28px; color: var(--muted); font-size: 1.1rem; }
+
+    .overview-grid, .cards, .compare-grid, .scenario-grid { display: grid; gap: 16px; }
+    .overview-grid { grid-template-columns: repeat(3, 1fr); }
+    .cards { grid-template-columns: repeat(2, 1fr); }
+    .compare-grid { grid-template-columns: repeat(3, 1fr); }
+    .scenario-grid { grid-template-columns: repeat(2, 1fr); }
+    .card {
+      position: relative;
+      padding: 22px;
+      background: var(--white);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: 0 6px 20px rgba(7,27,51,.05);
+    }
+    .card p:last-child, .card ul:last-child { margin-bottom: 0; }
+    .card-num {
+      display: inline-grid;
+      place-items: center;
+      min-width: 38px;
+      height: 38px;
+      margin-bottom: 20px;
+      color: var(--white);
+      background: var(--navy);
+      border-radius: 11px;
+      font-weight: 900;
+    }
+    .lesson-card { overflow: hidden; padding-top: 76px; }
+    .lesson-card::before { content: ""; position: absolute; inset: 0 0 auto; height: 9px; background: var(--lesson); }
+    .lesson-card .card-num { position: absolute; top: 22px; left: 22px; background: var(--lesson); }
+    .lesson-card small { color: var(--muted); font-weight: 700; }
+
+    .flow {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      align-items: stretch;
+      gap: 0;
+      margin: 34px 0;
+    }
+    .flow-step { position: relative; padding: 24px; color: var(--white); background: var(--navy); }
+    .flow-step:first-child { border-radius: 16px 0 0 16px; }
+    .flow-step:last-child { border-radius: 0 16px 16px 0; }
+    .flow-step + .flow-step { border-left: 1px solid rgba(255,255,255,.2); }
+    .flow-step b { display: block; margin-bottom: 5px; color: #82e6f1; font-size: 1.08rem; }
+    .flow-step span { color: #d4e4ee; font-size: .92rem; }
+
+    .callout { margin: 22px 0; padding: 20px 22px; background: var(--ice); border-left: 6px solid var(--cyan); border-radius: 6px 14px 14px 6px; }
+    .callout.warning { background: #fff7e7; border-left-color: var(--orange); }
+    .callout.danger { background: #fff0ef; border-left-color: var(--red); }
+    .callout.success { background: #ecf9f2; border-left-color: var(--green); }
+    .callout strong { color: var(--navy); }
+
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0; }
+    .chip { padding: 5px 10px; color: var(--navy); background: var(--ice); border: 1px solid #c6e6ef; border-radius: 999px; font-size: .84rem; font-weight: 800; }
+    .mini-list { padding-left: 20px; }
+    .mini-list li { margin: 7px 0; }
+
+    .table-wrap { overflow-x: auto; margin: 22px 0; border: 1px solid var(--line); border-radius: 14px; }
+    table { width: 100%; border-collapse: collapse; background: var(--white); }
+    th, td { padding: 13px 15px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--line); }
+    th { color: var(--white); background: var(--navy-2); font-size: .88rem; }
+    tr:last-child td { border-bottom: 0; }
+    tbody tr:nth-child(even) { background: #f8fbfc; }
+    .status { display: inline-block; padding: 3px 8px; border-radius: 999px; font-size: .75rem; font-weight: 900; white-space: nowrap; }
+    .status.ok { color: #09613c; background: #dff5e9; }
+    .status.warn { color: #805000; background: #fff0c9; }
+    .status.stop { color: #8d2822; background: #ffe1de; }
+
+    .sequence { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 20px 0; }
+    .sequence span { padding: 9px 12px; background: var(--white); border: 1px solid var(--line); border-radius: 10px; font-weight: 800; }
+    .sequence b { color: var(--cyan); }
+
+    details {
+      margin: 10px 0;
+      background: var(--white);
+      border: 1px solid var(--line);
+      border-radius: 13px;
+    }
+    summary { padding: 15px 18px; color: var(--navy); font-weight: 800; cursor: pointer; }
+    details > div { padding: 0 18px 18px; }
+
+    .scenario { display: flex; flex-direction: column; }
+    .scenario-tag { align-self: flex-start; padding: 4px 9px; color: var(--purple); background: #f0ecff; border-radius: 999px; font-size: .76rem; font-weight: 900; }
+    .scenario .reveal { display: none; margin-top: 14px; padding: 14px; background: var(--ice); border-radius: 11px; }
+    .scenario.revealed .reveal { display: block; }
+    .scenario button { align-self: flex-start; margin-top: auto; padding: 8px 12px; color: var(--blue); background: transparent; border: 1px solid #a7d5e4; border-radius: 9px; font-weight: 800; }
+
+    .flashcard-area { display: grid; grid-template-columns: 1fr 220px; gap: 20px; align-items: stretch; }
+    .flashcard {
+      display: block;
+      width: 100%;
+      min-height: 260px;
+      padding: 0;
+      color: var(--white);
+      background: transparent;
+      border: 0;
+      perspective: 1000px;
+      text-align: left;
+    }
+    .flash-inner { display: block; position: relative; width: 100%; height: 100%; min-height: 260px; transition: transform .5s; transform-style: preserve-3d; }
+    .flashcard.flipped .flash-inner { transform: rotateY(180deg); }
+    .flash-face {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: clamp(24px, 5vw, 48px);
+      border-radius: 20px;
+      backface-visibility: hidden;
+      box-shadow: var(--shadow);
+    }
+    .flash-front { background: linear-gradient(135deg, var(--navy), #0b5a78); }
+    .flash-back { color: var(--ink); background: var(--white); border: 2px solid var(--cyan); transform: rotateY(180deg); }
+    .flash-face small { margin-bottom: 14px; color: #93e6f1; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; }
+    .flash-back small { color: var(--blue); }
+    .flash-face strong { font-size: clamp(1.25rem, 3vw, 2rem); line-height: 1.25; }
+    .flash-controls { display: flex; flex-direction: column; justify-content: center; gap: 9px; }
+    .flash-count { color: var(--muted); text-align: center; font-weight: 800; }
+
+    .checklist { display: grid; gap: 10px; margin: 20px 0; }
+    .check-item { display: flex; align-items: flex-start; gap: 12px; padding: 13px 15px; background: var(--white); border: 1px solid var(--line); border-radius: 11px; }
+    .check-item input { width: 19px; height: 19px; margin-top: 3px; accent-color: var(--green); }
+    .check-item:has(input:checked) { color: var(--muted); background: #f0f8f4; }
+    .check-item:has(input:checked) span { text-decoration: line-through; }
+
+    .quiz-head { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 18px; }
+    .quiz-score { min-width: 110px; padding: 10px 14px; color: var(--white); background: var(--navy); border-radius: 12px; text-align: center; font-weight: 900; }
+    .question { margin: 18px 0; padding: 20px; background: var(--white); border: 1px solid var(--line); border-radius: 15px; }
+    .question.correct { border-color: var(--green); box-shadow: inset 5px 0 var(--green); }
+    .question.incorrect { border-color: var(--red); box-shadow: inset 5px 0 var(--red); }
+    .question legend { max-width: 100%; padding: 0 5px; color: var(--navy); font-weight: 900; }
+    .option { display: flex; gap: 10px; margin: 8px 0; padding: 10px 12px; background: #f7fafc; border: 1px solid transparent; border-radius: 9px; cursor: pointer; }
+    .option:hover { border-color: #afd7e4; }
+    .option input { margin-top: 5px; accent-color: var(--blue); }
+    .feedback { display: none; margin-top: 10px; padding: 10px 12px; border-radius: 9px; font-size: .92rem; }
+    .question.correct .feedback, .question.incorrect .feedback { display: block; }
+    .question.correct .feedback { color: #0b6540; background: #e7f7ef; }
+    .question.incorrect .feedback { color: #8c2b25; background: #ffebe9; }
+    .quiz-result { display: none; margin: 20px 0; padding: 22px; border-radius: 14px; }
+    .quiz-result.visible { display: block; }
+
+    .class-plan { display: grid; grid-template-columns: 80px 1fr; gap: 0 18px; }
+    .class-plan .time { color: var(--blue); font-weight: 900; text-align: right; }
+    .class-plan .activity { position: relative; padding: 0 0 24px 22px; border-left: 2px solid var(--line); }
+    .class-plan .activity::before { content: ""; position: absolute; top: 5px; left: -7px; width: 12px; height: 12px; background: var(--cyan); border: 2px solid var(--white); border-radius: 50%; }
+
+    .notes { width: 100%; min-height: 150px; padding: 15px; color: var(--ink); background: var(--white); border: 1px solid var(--line); border-radius: 12px; resize: vertical; }
+    .save-state { min-height: 24px; margin-top: 7px; color: var(--green); font-size: .84rem; }
+
+    footer { padding: 38px 22px; color: #c9dbe7; background: var(--navy); text-align: center; }
+    footer strong { color: var(--white); }
+
+    .presentation-panel {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      z-index: 50;
+      display: none;
+      align-items: center;
+      gap: 6px;
+      padding: 7px;
+      background: var(--navy);
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+    }
+    .presentation-panel button { padding: 7px 11px; color: var(--white); background: rgba(255,255,255,.1); border: 0; border-radius: 8px; }
+    .presentation-panel span { padding: 0 7px; color: var(--white); font-weight: 800; }
+
+    body.dark {
+      --paper: #081828;
+      --white: #10263a;
+      --ink: #e8f1f6;
+      --muted: #a7bdcb;
+      --line: #284158;
+      --ice: #15364b;
+      --navy: #061525;
+      --navy-2: #0b4164;
+    }
+    body.dark .option, body.dark tbody tr:nth-child(even), body.dark .check-item:has(input:checked) { background: #0c2134; }
+    body.dark .status.ok { color: #aef0cf; background: #174d38; }
+    body.dark .status.warn { color: #ffe0a0; background: #624710; }
+    body.dark .status.stop { color: #ffc0bb; background: #622d2a; }
+    body.dark .flash-front { background: linear-gradient(135deg, #0e3453, #08708a); }
+
+    body.presentation { overflow: hidden; background: var(--white); }
+    body.presentation .topbar, body.presentation .hero, body.presentation .side-nav, body.presentation footer, body.presentation .reading-progress { display: none; }
+    body.presentation .layout { display: block; max-width: none; }
+    body.presentation main { padding: 0; }
+    body.presentation .content-section { display: none; width: 100vw; height: 100vh; max-width: none; margin: 0; padding: 6vh 7vw 11vh; overflow: auto; }
+    body.presentation .content-section.present-active { display: block; }
+    body.presentation .presentation-panel { display: flex; }
+    body.presentation h2 { font-size: clamp(2.3rem, 5vw, 4.4rem); }
+    body.presentation .lead { font-size: clamp(1.1rem, 2vw, 1.6rem); }
+
+    @media (max-width: 980px) {
+      .layout { grid-template-columns: 1fr; }
+      .side-nav { display: none; }
+      .overview-grid, .compare-grid { grid-template-columns: 1fr; }
+      .lesson-card { min-height: 220px; }
+    }
+    @media (max-width: 720px) {
+      .brand > span:last-child { display: none; }
+      .topbar { padding-inline: 12px; }
+      .hero { min-height: 78vh; }
+      .cards, .scenario-grid { grid-template-columns: 1fr; }
+      .flow { grid-template-columns: 1fr; gap: 1px; }
+      .flow-step:first-child { border-radius: 14px 14px 0 0; }
+      .flow-step:last-child { border-radius: 0 0 14px 14px; }
+      .flow-step + .flow-step { border-left: 0; border-top: 1px solid rgba(255,255,255,.2); }
+      .flashcard-area { grid-template-columns: 1fr; }
+      .flash-controls { flex-direction: row; flex-wrap: wrap; }
+      .flash-count { width: 100%; }
+      .quiz-head { align-items: flex-start; flex-direction: column; }
+      .class-plan { grid-template-columns: 58px 1fr; gap: 0 12px; }
+      .content-section { padding-top: 58px; }
+    }
+    @media print {
+      :root { --paper: #fff; --white: #fff; --ink: #111; --muted: #444; --line: #bbb; }
+      .topbar, .side-nav, .hero-actions, .reading-progress, .presentation-panel, .scenario button, .flash-controls, .quiz-actions, footer { display: none !important; }
+      .hero { min-height: auto; padding: 30px; color: #111; background: #fff; border-bottom: 4px solid #111; }
+      .hero h1 span, .hero p { color: #111; }
+      .layout { display: block; }
+      main { padding: 0 20px; }
+      .content-section { break-before: page; padding-top: 25px; }
+      .card, .question, details { break-inside: avoid; box-shadow: none; }
+      details > div { display: block; }
+      .scenario .reveal { display: block; }
+      .flashcard-area { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#conteudo">Ir para o conteúdo</a>
+  <header class="topbar">
+    <div class="brand"><span class="brand-mark">IS</span><span>Implantação de Sistemas</span></div>
+    <div class="tools" aria-label="Ferramentas de visualização">
+      <button class="tool-btn" id="fontButton" type="button" title="Aumentar texto" aria-label="Aumentar tamanho do texto">A+</button>
+      <button class="tool-btn" id="themeButton" type="button" title="Alternar tema" aria-label="Alternar tema claro e escuro">◐</button>
+      <button class="tool-btn" id="presentButton" type="button" title="Modo apresentação" aria-label="Iniciar modo apresentação">▶</button>
+    </div>
+  </header>
+  <div class="reading-progress" id="readingProgress" aria-hidden="true"></div>
+
+  <section class="hero" aria-labelledby="titulo-principal">
+    <div class="hero-content">
+      <span class="eyebrow">Revisão interativa • Aulas 5, 6 e 7</span>
+      <h1 id="titulo-principal">Da decisão segura à <span>entrega comprovada.</span></h1>
+      <p>Material de estudo para estudantes do curso Técnico em Desenvolvimento de Sistemas. Revise conceitos, enfrente situações reais e teste o que aprendeu.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#mapa">Começar revisão ↓</a>
+        <a class="btn btn-secondary" href="#quiz">Ir para o quiz</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="layout">
+    <nav class="side-nav" aria-label="Navegação da revisão">
+      <p>Roteiro</p>
+      <a href="#mapa"><span class="nav-dot"></span>Visão geral</a>
+      <a href="#aula5"><span class="nav-dot"></span>Aula 5 • Prontidão</a>
+      <a href="#aula6"><span class="nav-dot"></span>Aula 6 • Implantação</a>
+      <a href="#aula7"><span class="nav-dot"></span>Aula 7 • Homologação</a>
+      <a href="#comparativo"><span class="nav-dot"></span>Não confunda</a>
+      <a href="#casos"><span class="nav-dot"></span>Situações-problema</a>
+      <a href="#flashcards"><span class="nav-dot"></span>Flashcards</a>
+      <a href="#quiz"><span class="nav-dot"></span>Quiz final</a>
+      <a href="#sala"><span class="nav-dot"></span>Revisão em sala</a>
+    </nav>
+
+    <main id="conteudo">
+      <section class="content-section" id="mapa" data-title="Visão geral">
+        <p class="section-kicker">Visão geral</p>
+        <h2>Uma implantação é uma cadeia de decisões e evidências.</h2>
+        <p class="lead">As três aulas acompanham o mesmo caso: o EduControl Lite 1.0.0. Cada etapa só avança quando a anterior deixa evidências suficientes.</p>
+
+        <div class="overview-grid">
+          <article class="card lesson-card" style="--lesson:#7357c9">
+            <span class="card-num">05</span>
+            <h3>Decidir se está pronto</h3>
+            <p>Pesquisar, verificar gates, analisar riscos e emitir um parecer para cada ambiente.</p>
+            <small>Saída: GO com restrições para HOM; NO-GO para PROD.</small>
+          </article>
+          <article class="card lesson-card" style="--lesson:#0077b6">
+            <span class="card-num">06</span>
+            <h3>Executar com controle</h3>
+            <p>Instalar, parametrizar, migrar, testar e ensaiar o retorno no ambiente autorizado.</p>
+            <small>Saída: HOM válido e evidências técnicas reproduzíveis.</small>
+          </article>
+          <article class="card lesson-card" style="--lesson:#138a55">
+            <span class="card-num">07</span>
+            <h3>Comprovar e entregar</h3>
+            <p>Homologar, corrigir falhas, documentar, treinar e obter aceite do cliente.</p>
+            <small>Saída: escopo validado, documentado e ensinável.</small>
+          </article>
+        </div>
+
+        <div class="flow" aria-label="Fluxo das aulas">
+          <div class="flow-step"><b>1. Autorizar</b><span>Aula 5: há condição segura para avançar?</span></div>
+          <div class="flow-step"><b>2. Executar</b><span>Aula 6: a implantação foi controlada?</span></div>
+          <div class="flow-step"><b>3. Aceitar</b><span>Aula 7: o resultado atende ao escopo?</span></div>
+        </div>
+
+        <div class="callout">
+          <strong>Ideia central:</strong> “funcionou na minha máquina” não é evidência suficiente. É preciso registrar versão, ambiente, horário, responsável, resultado e critério usado para decidir.
+        </div>
+      </section>
+
+      <section class="content-section" id="aula5" data-title="Aula 5 — Prontidão">
+        <p class="section-kicker">Aula 5 • Comitê de prontidão</p>
+        <h2>Antes de instalar, a equipe precisa saber quando avançar — e quando parar.</h2>
+        <p class="lead">O comitê não existe para aprovar a qualquer custo. Sua função é reunir fatos, reconhecer lacunas e defender uma decisão rastreável.</p>
+
+        <div class="cards">
+          <article class="card">
+            <span class="card-num">1</span>
+            <h3>As três decisões possíveis</h3>
+            <ul class="mini-list">
+              <li><strong>GO:</strong> pode avançar dentro do escopo autorizado.</li>
+              <li><strong>GO com restrições:</strong> pode avançar sob condições explícitas.</li>
+              <li><strong>NO-GO:</strong> não pode avançar enquanto houver bloqueio crítico.</li>
+            </ul>
+          </article>
+          <article class="card">
+            <span class="card-num">2</span>
+            <h3>Evidência útil</h3>
+            <p>É identificável, pertinente e aplicada a uma decisão. Uma lista de links não substitui a explicação: <em>“esta fonte muda nossa decisão porque...”</em></p>
+            <div class="chips"><span class="chip">LGPD / ANPD</span><span class="chip">NIST</span><span class="chip">OWASP</span><span class="chip">Documentação oficial</span></div>
+          </article>
+          <article class="card">
+            <span class="card-num">3</span>
+            <h3>Risco verificável</h3>
+            <p>Descreva causa e consequência, avalie probabilidade e impacto, escolha um tratamento e atribua responsável, prazo e evidência.</p>
+            <p><strong>Risco sem dono ou ação continua aberto.</strong></p>
+          </article>
+          <article class="card">
+            <span class="card-num">4</span>
+            <h3>Rollback de verdade</h3>
+            <p>Backup é apenas um recurso. O plano precisa de gatilho, autoridade, estado anterior, procedimento, tempo, teste de restauração e validação.</p>
+          </article>
+        </div>
+
+        <h3 style="margin-top:34px">Os seis gates de decisão</h3>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Gate</th><th>Pergunta essencial</th><th>Se faltar evidência</th></tr></thead>
+            <tbody>
+              <tr><td>Escopo e autoridade</td><td>Quem solicitou, aprovou e pode interromper?</td><td><span class="status stop">Não iniciar</span></td></tr>
+              <tr><td>Artefato</td><td>Origem, versão e hash são verificáveis?</td><td><span class="status stop">Bloquear pacote</span></td></tr>
+              <tr><td>Ambiente</td><td>Destino, runtime, porta, acesso e capacidade foram aprovados?</td><td><span class="status warn">Tratar lacuna</span></td></tr>
+              <tr><td>Dados e segurança</td><td>Dados, segredos, acessos e logs estão protegidos?</td><td><span class="status stop">Não usar dados reais</span></td></tr>
+              <tr><td>Validação</td><td>Há critérios de saúde, testes e aceite?</td><td><span class="status stop">Não liberar PROD</span></td></tr>
+              <tr><td>Retorno</td><td>Gatilho, responsável e restauração foram testados?</td><td><span class="status stop">Não liberar PROD</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout warning">
+          <strong>Caso-base:</strong> o hash correto e a página abrindo permitem continuar a análise do pacote, mas não autorizam produção. O parecer esperado é <strong>GO com restrições para HOM</strong> e <strong>NO-GO para PROD</strong>.
+        </div>
+
+        <details>
+          <summary>O que pode ser registrado como evidência?</summary>
+          <div>Versão, ambiente, horário, comando, status, responsável, hash e mensagem de erro minimizada. Não inclua senhas, tokens, chaves, dados pessoais ou logs completos sem revisão.</div>
+        </details>
+        <details>
+          <summary>Como classificar um gate?</summary>
+          <div>Use <strong>atendido</strong>, <strong>parcial</strong>, <strong>não atendido</strong> ou <strong>não se aplica</strong>. Toda classificação precisa de justificativa e referência à evidência.</div>
+        </details>
+      </section>
+
+      <section class="content-section" id="aula6" data-title="Aula 6 — Implantação">
+        <p class="section-kicker">Aula 6 • Implantação técnica em HOM</p>
+        <h2>Autorização não é atalho: cada etapa produz a evidência da próxima.</h2>
+        <p class="lead">A equipe transforma o parecer da Aula 5 em uma implantação controlada, sempre no ambiente autorizado.</p>
+
+        <div class="sequence" aria-label="Sequência segura de implantação">
+          <span>Preparar</span><b>→</b><span>Instalar</span><b>→</b><span>Configurar</span><b>→</b><span>Migrar</span><b>→</b><span>Testar</span><b>→</b><span>Validar</span>
+        </div>
+
+        <div class="cards">
+          <article class="card">
+            <h3>Instalar ≠ parametrizar</h3>
+            <p>Instalar coloca o software no destino. Parametrizar adapta ambiente, organização, endereço, porta, perfis e permissões ao contexto correto.</p>
+          </article>
+          <article class="card">
+            <h3>Menor privilégio</h3>
+            <p>Cada perfil recebe somente o necessário. Administrador configura; secretaria consulta e edita; consulta apenas visualiza.</p>
+          </article>
+          <article class="card">
+            <h3>Migração conferida</h3>
+            <p>Antes: valide origem e backup. Durante: registre execução e erros. Depois: reconcilie contagens, status, IDs e uma amostra.</p>
+          </article>
+          <article class="card">
+            <h3>Smoke test</h3>
+            <p>É uma verificação rápida de saúde mínima. Não substitui homologação funcional, teste de segurança nem aceite do cliente.</p>
+          </article>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Perfil</th><th>Consultar</th><th>Editar</th><th>Configurar</th></tr></thead>
+            <tbody>
+              <tr><td>Administrador</td><td>Sim</td><td>Sim</td><td>Sim</td></tr>
+              <tr><td>Secretaria</td><td>Sim</td><td>Sim</td><td>Não</td></tr>
+              <tr><td>Consulta</td><td>Sim</td><td>Não</td><td>Não</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout success">
+          <strong>Resultado esperado do laboratório:</strong> HOM configurado, 8 registros fictícios migrados, sendo 7 ativos e 1 inativo, nenhum ID duplicado, endpoint <code>/health</code> saudável e versão correta.
+        </div>
+
+        <h3 style="margin-top:34px">O ensaio de rollback</h3>
+        <p>O retorno restaura o estado anterior de dois registros. Depois, a equipe repete a migração e o smoke test para devolver HOM ao estado final válido. Isso comprova tanto a recuperação quanto a recomposição.</p>
+        <details>
+          <summary>Quando interromper a sequência?</summary>
+          <div>Ao encontrar falha crítica, divergência de versão, pacote inválido, destino incorreto, risco de exposição, perda de integridade ou ausência de autorização. Registre o ponto de parada e trate a causa antes de continuar.</div>
+        </details>
+      </section>
+
+      <section class="content-section" id="aula7" data-title="Aula 7 — Homologação">
+        <p class="section-kicker">Aula 7 • Homologação, documentação e entrega</p>
+        <h2>O cliente aceita aquilo que foi testado, compreendido e delimitado.</h2>
+        <p class="lead">A equipe técnica demonstra o resultado; o cliente verifica o escopo. Uma entrega profissional preserva falhas, correções, limites e pendências.</p>
+
+        <div class="cards">
+          <article class="card">
+            <h3>Caso de teste reproduzível</h3>
+            <p>Inclui ID, objetivo, pré-condição, passos, resultado esperado, resultado obtido, evidência e status.</p>
+          </article>
+          <article class="card">
+            <h3>Falha → correção → reteste</h3>
+            <p>Não apague a falha original. O histórico antes/depois demonstra controle e aprendizagem.</p>
+          </article>
+          <article class="card">
+            <h3>Dois públicos</h3>
+            <p>O manual usa linguagem do usuário. O resumo técnico registra versão, parâmetros sem segredos, migração, testes, logs e rollback.</p>
+          </article>
+          <article class="card">
+            <h3>Treinamento com prática</h3>
+            <p>Explicar não garante aprendizagem. O cliente precisa executar uma tarefa observável e demonstrar compreensão.</p>
+          </article>
+        </div>
+
+        <h3 style="margin-top:34px">Matriz mínima de homologação</h3>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>ID</th><th>Critério</th><th>Evidência</th></tr></thead>
+            <tbody>
+              <tr><td>T01</td><td>Aplicação acessível</td><td>Serviço e página respondendo.</td></tr>
+              <tr><td>T02</td><td>Versão 1.0.0 e ambiente HOM</td><td><code>/health</code> e arquivo VERSION.</td></tr>
+              <tr><td>T03</td><td>Parametrização carregada</td><td>Configuração e registros da Aula 6.</td></tr>
+              <tr><td>T04</td><td>Dados migrados</td><td>8 registros; 7 ativos; 1 inativo.</td></tr>
+              <tr><td>T05</td><td>Permissões</td><td>Matriz e cenário de menor privilégio.</td></tr>
+              <tr><td>T06</td><td>Retorno comprovado</td><td>Rollback e recomposição registrados.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout danger">
+          <strong>Incidente obrigatório:</strong> o perfil Consulta consegue editar. Registre a falha, corrija com autorização, repita exatamente o mesmo teste e preserve as evidências antes e depois.
+        </div>
+
+        <div class="compare-grid">
+          <article class="card"><span class="status ok">ACEITO</span><h3 style="margin-top:12px">Escopo atendido</h3><p>Critérios comprovados e nenhuma pendência crítica.</p></article>
+          <article class="card"><span class="status warn">COM RESTRIÇÕES</span><h3 style="margin-top:12px">Pendência controlada</h3><p>Item não crítico com responsável e prazo definidos.</p></article>
+          <article class="card"><span class="status stop">REPROVADO</span><h3 style="margin-top:12px">Bloqueio</h3><p>Falha crítica, evidência ausente ou resultado divergente.</p></article>
+        </div>
+
+        <div class="callout warning">
+          <strong>Limite do aceite:</strong> a homologação desta oficina vale para o EduControl Lite 1.0.0, em HOM e apenas para o escopo testado. Ela não autoriza automaticamente PROD.
+        </div>
+      </section>
+
+      <section class="content-section" id="comparativo" data-title="Não confunda">
+        <p class="section-kicker">Síntese comparativa</p>
+        <h2>Conceitos parecidos, funções diferentes.</h2>
+        <p class="lead">Boa parte dos erros de prova e de projeto nasce da troca entre termos próximos.</p>
+
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Conceitos</th><th>Diferença essencial</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Instalação × parametrização</strong></td><td>A primeira disponibiliza o software; a segunda adapta seu comportamento ao ambiente e à organização.</td></tr>
+              <tr><td><strong>Backup × rollback</strong></td><td>Backup é uma cópia; rollback é o processo autorizado e testado de retorno ao estado anterior.</td></tr>
+              <tr><td><strong>Smoke test × homologação</strong></td><td>Smoke test verifica saúde mínima; homologação confirma critérios do negócio e do escopo com o cliente.</td></tr>
+              <tr><td><strong>Evidência × opinião</strong></td><td>Evidência pode ser conferida e reproduzida; opinião precisa ser sustentada por fatos e critérios.</td></tr>
+              <tr><td><strong>Manual × resumo técnico</strong></td><td>Manual orienta o usuário; resumo técnico permite operar, manter e auditar a solução.</td></tr>
+              <tr><td><strong>GO × aceite</strong></td><td>GO autoriza uma etapa futura; aceite confirma o resultado de um escopo já testado.</td></tr>
+              <tr><td><strong>HOM × PROD</strong></td><td>HOM permite validar com segurança; PROD atende usuários reais e exige gates e autorização próprios.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="content-section" id="casos" data-title="Situações-problema">
+        <p class="section-kicker">Prática guiada</p>
+        <h2>Decida antes de revelar a resposta.</h2>
+        <p class="lead">Em implantação, uma boa resposta inclui decisão, justificativa, risco e próxima ação.</p>
+
+        <div class="scenario-grid">
+          <article class="card scenario">
+            <span class="scenario-tag">Aula 5</span>
+            <h3>O hash do pacote não confere.</h3>
+            <p>A página abre e a janela de mudança começou. A equipe deve continuar?</p>
+            <button type="button" class="reveal-btn">Revelar análise</button>
+            <div class="reveal"><strong>Não.</strong> Bloqueie o artefato e solicite uma release válida. Alterar o manifesto para “fazer conferir” destruiria a confiabilidade da evidência.</div>
+          </article>
+          <article class="card scenario">
+            <span class="scenario-tag">Aula 5</span>
+            <h3>Existe backup, mas ninguém restaurou.</h3>
+            <p>Isso é suficiente para liberar PROD?</p>
+            <button type="button" class="reveal-btn">Revelar análise</button>
+            <div class="reveal"><strong>Não.</strong> Falta provar que o retorno funciona, dentro do tempo esperado e com validação dos dados e do serviço.</div>
+          </article>
+          <article class="card scenario">
+            <span class="scenario-tag">Aula 6</span>
+            <h3>A origem tem 8 registros e o destino tem 7.</h3>
+            <p>O serviço responde em <code>/health</code>. A migração passou?</p>
+            <button type="button" class="reveal-btn">Revelar análise</button>
+            <div class="reveal"><strong>Não.</strong> Saúde do serviço não prova integridade da migração. Interrompa a validação, investigue a divergência e reconcilie os dados.</div>
+          </article>
+          <article class="card scenario">
+            <span class="scenario-tag">Aula 6</span>
+            <h3>O perfil Consulta consegue editar.</h3>
+            <p>Como a equipe deve registrar e tratar?</p>
+            <button type="button" class="reveal-btn">Revelar análise</button>
+            <div class="reveal"><strong>Registre a falha.</strong> Corrija a permissão com autorização, repita o mesmo caso e preserve o antes e o depois.</div>
+          </article>
+          <article class="card scenario">
+            <span class="scenario-tag">Aula 7</span>
+            <h3>Todos assistiram ao treinamento.</h3>
+            <p>Isso comprova aprendizagem?</p>
+            <button type="button" class="reveal-btn">Revelar análise</button>
+            <div class="reveal"><strong>Ainda não.</strong> Solicite uma tarefa observável ao cliente e verifique o resultado. Presença não equivale a competência demonstrada.</div>
+          </article>
+          <article class="card scenario">
+            <span class="scenario-tag">Aula 7</span>
+            <h3>Há pendência não crítica com prazo e responsável.</h3>
+            <p>Qual decisão de aceite é adequada?</p>
+            <button type="button" class="reveal-btn">Revelar análise</button>
+            <div class="reveal"><strong>Aceito com restrições</strong>, desde que a pendência não comprometa os critérios críticos e seus limites estejam documentados.</div>
+          </article>
+        </div>
+      </section>
+
+      <section class="content-section" id="flashcards" data-title="Flashcards">
+        <p class="section-kicker">Revisão ativa</p>
+        <h2>Explique com suas palavras. Depois vire o cartão.</h2>
+        <p class="lead">Clique no cartão ou pressione Enter. Tente responder em voz alta antes de conferir.</p>
+
+        <div class="flashcard-area">
+          <button type="button" class="flashcard" id="flashcard" aria-label="Virar flashcard">
+            <span class="flash-inner">
+              <span class="flash-face flash-front"><small id="flashLesson">Aula 5</small><strong id="flashQuestion">O que diferencia GO com restrições de um GO irrestrito?</strong></span>
+              <span class="flash-face flash-back"><small>Resposta</small><strong id="flashAnswer">O avanço é permitido apenas sob condições explícitas, com limites, responsáveis e pendências controladas.</strong></span>
+            </span>
+          </button>
+          <div class="flash-controls">
+            <button type="button" class="btn btn-outline" id="prevFlash">← Anterior</button>
+            <button type="button" class="btn btn-dark" id="flipFlash">Virar cartão</button>
+            <button type="button" class="btn btn-outline" id="nextFlash">Próximo →</button>
+            <div class="flash-count" id="flashCount" aria-live="polite">1 / 9</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="content-section" id="quiz" data-title="Quiz final">
+        <p class="section-kicker">Autoavaliação</p>
+        <div class="quiz-head">
+          <div><h2>Quiz final: você liberaria essa implantação?</h2><p class="lead">São 12 questões. A correção explica cada resposta e mostra os temas que merecem revisão.</p></div>
+          <div class="quiz-score" id="quizScore" aria-live="polite">— / 12</div>
+        </div>
+
+        <form id="quizForm">
+          <fieldset class="question" data-answer="b" data-topic="Aula 5">
+            <legend>1. HOM aprovado autoriza automaticamente a publicação em PROD?</legend>
+            <label class="option"><input type="radio" name="q1" value="a"> Sim, porque os ambientes são equivalentes.</label>
+            <label class="option"><input type="radio" name="q1" value="b"> Não, cada ambiente exige gates e autorização próprios.</label>
+            <label class="option"><input type="radio" name="q1" value="c"> Sim, se a página inicial abrir.</label>
+            <div class="feedback">HOM e PROD têm finalidades, riscos e autorizações diferentes.</div>
+          </fieldset>
+
+          <fieldset class="question" data-answer="c" data-topic="Aula 5">
+            <legend>2. Qual característica torna uma fonte útil ao dossiê?</legend>
+            <label class="option"><input type="radio" name="q2" value="a"> Ser o primeiro resultado da busca.</label>
+            <label class="option"><input type="radio" name="q2" value="b"> Ter muitas páginas e termos técnicos.</label>
+            <label class="option"><input type="radio" name="q2" value="c"> Ser identificável, pertinente e aplicada a uma decisão.</label>
+            <div class="feedback">Fonte útil não é decoração: ela sustenta uma decisão concreta.</div>
+          </fieldset>
+
+          <fieldset class="question" data-answer="a" data-topic="Aula 5">
+            <legend>3. O hash calculado diverge do manifesto. Qual ação é segura?</legend>
+            <label class="option"><input type="radio" name="q3" value="a"> Bloquear o pacote e solicitar uma release válida.</label>
+            <label class="option"><input type="radio" name="q3" value="b"> Editar o manifesto para o valor calculado.</label>
+            <label class="option"><input type="radio" name="q3" value="c"> Continuar, desde que o nome do arquivo esteja correto.</label>
+            <div class="feedback">A divergência quebra a garantia de integridade e origem do artefato.</div>
+          </fieldset>
+
+          <fieldset class="question" data-answer="c" data-topic="Aula 5">
+            <legend>4. Qual item transforma um backup em parte de um rollback confiável?</legend>
+            <label class="option"><input type="radio" name="q4" value="a"> Um nome de arquivo curto.</label>
+            <label class="option"><input type="radio" name="q4" value="b"> Apenas mais uma cópia.</label>
+            <label class="option"><input type="radio" name="q4" value="c"> Restauração testada e estado recuperado validado.</label>
+            <div class="feedback">Só a restauração testada comprova a capacidade real de retorno.</div>
+          </fieldset>
+
+          <fieldset class="question" data-answer="b" data-topic="Aula 6">
+            <legend>5. Depois da migração, a origem tem 8 registros e o destino tem 7. O que fazer?</legend>
+            <label class="option"><input type="radio" name="q5" value="a"> Aprovar, pois uma diferença pequena é aceitável.</label>
+            <label class="option"><input type="radio" name="q5" value="b"> Investigar a divergência e reconciliar os dados.</label>
+            <label class="option"><input type="radio" name="q5" value="c"> Criar manualmente um registro qualquer.</label>
+            <div class="feedback">A reconciliação deve explicar e corrigir a divergência sem fabricar dados.</div>
+          </fieldset>
+
+          <fieldset class="question" data-answer="a" data-topic="Aula 6">
+            <legend>6. Qual permissão atende ao menor privilégio para o perfil Consulta?</legend>
+            <label class="option"><input type="radio" name="q6" value="a"> Consultar, sem editar nem configurar.</label>
+            <label class="option"><input type="radio" name="q6" value="b"> Consultar e editar, sem configurar.</label>
+            <label class="option"><input type="radio" name="q6" value="c"> Todas as permissões para evitar chamados.</label>
+            <div class="feedback">O perfil deve receber somente o necessário para cumprir sua função.</div>
+          </fieldset>
+
+          <fieldset class="question" data-answer="c" data-topic="Aula 6">
+            <legend>7. Um smoke test aprovado comprova o quê?</legend>
+            <label class="option"><input type="radio" name="q7" value="a"> Que todo o sistema foi homologado pelo cliente.</label>
+            <label class="option"><input type="radio" name="q7" value="b"> Que não existem vulnerabilidades.</label>
+            <label class="option"><input type="radio" name="q7" value="c"> Que a versão implantada está minimamente saudável.</label>
+            <div class="feedback">Smoke test é curto e essencial, mas não cobre todo o comportamento e segurança.</div>
+          </fieldset>
+
+          <fieldset class="question" data-answer="b" data-topic="Aula 6">
+            <legend>8. Após ensaiar o rollback em HOM, qual é o próximo passo?</legend>
+            <label class="option"><input type="radio" name="q8" value="a"> Encerrar deixando o estado antigo restaurado.</label>
+            <label class="option"><input type="radio" name="q8" value="b"> Repetir a migração e o smoke test para recompor o estado final válido.</label>
+            <label class="option"><input type="radio" name="q8" value="c"> Apagar as evidências do ensaio.</label>
+            <div class="feedback">O ambiente precisa voltar ao estado final esperado e ser novamente verificado.</div>
+          </fieldset>
+
+          <fieldset class="question" data-answer="a" data-topic="Aula 7">
+            <legend>9. O perfil Consulta editou um registro durante a homologação. Como agir?</legend>
+            <label class="option"><input type="radio" name="q9" value="a"> Registrar a falha, corrigir com autorização e retestar.</label>
+            <label class="option"><input type="radio" name="q9" value="b"> Apagar o teste e executar outro mais simples.</label>
+            <label class="option"><input type="radio" name="q9" value="c"> Aprovar porque o sistema permaneceu disponível.</label>
+            <div class="feedback">Preservar o histórico demonstra controle; esconder a falha destrói rastreabilidade.</div>
+          </fieldset>
+
+          <fieldset class="question" data-answer="c" data-topic="Aula 7">
+            <legend>10. O que demonstra que o treinamento foi efetivo?</legend>
+            <label class="option"><input type="radio" name="q10" value="a"> Todos permaneceram na sala.</label>
+            <label class="option"><input type="radio" name="q10" value="b"> O instrutor apresentou todos os slides.</label>
+            <label class="option"><input type="radio" name="q10" value="c"> O cliente executou corretamente uma tarefa observável.</label>
+            <div class="feedback">A prática permite verificar aprendizagem, não apenas exposição ao conteúdo.</div>
+          </fieldset>
+
+          <fieldset class="question" data-answer="b" data-topic="Aula 7">
+            <legend>11. Quando usar “aceito com restrições”?</legend>
+            <label class="option"><input type="radio" name="q11" value="a"> Quando há uma falha crítica sem solução.</label>
+            <label class="option"><input type="radio" name="q11" value="b"> Quando pendências não críticas têm responsável e prazo.</label>
+            <label class="option"><input type="radio" name="q11" value="c"> Sempre que o prazo do projeto terminar.</label>
+            <div class="feedback">Restrições precisam ser não críticas, explícitas, atribuídas e acompanhadas.</div>
+          </fieldset>
+
+          <fieldset class="question" data-answer="a" data-topic="Integração">
+            <legend>12. Qual sequência resume corretamente as Aulas 5, 6 e 7?</legend>
+            <label class="option"><input type="radio" name="q12" value="a"> Autorizar → executar → homologar e entregar.</label>
+            <label class="option"><input type="radio" name="q12" value="b"> Publicar → investigar → pedir autorização.</label>
+            <label class="option"><input type="radio" name="q12" value="c"> Treinar → instalar → planejar rollback.</label>
+            <div class="feedback">A prontidão autoriza; a implantação executa; a homologação valida e delimita a entrega.</div>
+          </fieldset>
+
+          <div class="quiz-actions">
+            <button type="submit" class="btn btn-dark">Corrigir quiz</button>
+            <button type="button" class="btn btn-outline" id="resetQuiz">Refazer</button>
+          </div>
+          <div class="quiz-result" id="quizResult" aria-live="polite"></div>
+        </form>
+      </section>
+
+      <section class="content-section" id="sala" data-title="Revisão em sala">
+        <p class="section-kicker">Aplicação docente</p>
+        <h2>Roteiro sugerido para 50 minutos de revisão em sala.</h2>
+        <p class="lead">O material também funciona projetado. Use o botão ▶ no topo e navegue com ← e →.</p>
+
+        <div class="class-plan">
+          <div class="time">5 min</div><div class="activity"><h3>Pergunta de abertura</h3><p>“A aplicação abriu. Já podemos publicar em PROD?” Colete hipóteses sem corrigir imediatamente.</p></div>
+          <div class="time">10 min</div><div class="activity"><h3>Mapa das três aulas</h3><p>Reconstrua com a turma: autorizar, executar, homologar e entregar.</p></div>
+          <div class="time">15 min</div><div class="activity"><h3>Situações-problema</h3><p>Divida a sala em grupos. Cada grupo decide, justifica e revela uma análise.</p></div>
+          <div class="time">12 min</div><div class="activity"><h3>Quiz individual</h3><p>Os estudantes respondem e anotam os temas com erro.</p></div>
+          <div class="time">8 min</div><div class="activity"><h3>Fechamento</h3><p>Cada estudante completa: “uma evidência que eu não posso esquecer é...”</p></div>
+        </div>
+
+        <h3>Checklist pessoal</h3>
+        <p>Marque o que você já consegue explicar sem consultar o material. O progresso fica salvo neste navegador.</p>
+        <div class="checklist" id="studyChecklist">
+          <label class="check-item"><input type="checkbox" data-check="gates"><span>Consigo explicar os seis gates e as três decisões do comitê.</span></label>
+          <label class="check-item"><input type="checkbox" data-check="risco"><span>Consigo transformar um risco em ação, responsável, prazo e evidência.</span></label>
+          <label class="check-item"><input type="checkbox" data-check="sequencia"><span>Consigo ordenar a sequência segura de implantação.</span></label>
+          <label class="check-item"><input type="checkbox" data-check="migracao"><span>Consigo descrever a conferência antes, durante e depois da migração.</span></label>
+          <label class="check-item"><input type="checkbox" data-check="testes"><span>Sei diferenciar smoke test, homologação e aceite.</span></label>
+          <label class="check-item"><input type="checkbox" data-check="entrega"><span>Consigo explicar por que documentar, treinar e preservar falhas faz parte da entrega.</span></label>
+        </div>
+
+        <h3>Minhas anotações</h3>
+        <textarea class="notes" id="studentNotes" placeholder="Registre dúvidas, conceitos para revisar ou um exemplo discutido em sala..." aria-label="Anotações do estudante"></textarea>
+        <div class="save-state" id="saveState" aria-live="polite"></div>
+      </section>
+    </main>
+  </div>
+
+  <footer>
+    <strong>Revisão — Implantação de Sistemas</strong><br>
+    Aulas 5 a 7 • Material offline para estudo e revisão em sala
+  </footer>
+
+  <div class="presentation-panel" aria-label="Controles da apresentação">
+    <button type="button" id="presentPrev" aria-label="Seção anterior">←</button>
+    <span id="presentCounter">1 / 9</span>
+    <button type="button" id="presentNext" aria-label="Próxima seção">→</button>
+    <button type="button" id="presentExit">Sair</button>
+  </div>
+
+  <script>
+    (() => {
+      const body = document.body;
+      const sections = [...document.querySelectorAll('.content-section')];
+      const navLinks = [...document.querySelectorAll('.side-nav a')];
+      const progress = document.getElementById('readingProgress');
+
+      if (location.hash) {
+        requestAnimationFrame(() => document.getElementById(location.hash.slice(1))?.scrollIntoView({ behavior: 'auto' }));
+      }
+
+      function safeGet(key) {
+        try { return localStorage.getItem(key); } catch (_) { return null; }
+      }
+      function safeSet(key, value) {
+        try { localStorage.setItem(key, value); } catch (_) { /* modo privado */ }
+      }
+
+      function updateProgress() {
+        const max = document.documentElement.scrollHeight - innerHeight;
+        const percent = max > 0 ? (scrollY / max) * 100 : 0;
+        progress.style.width = `${Math.min(100, percent)}%`;
+      }
+      addEventListener('scroll', updateProgress, { passive: true });
+      updateProgress();
+
+      const sectionObserver = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) return;
+          navLinks.forEach(link => link.classList.toggle('active', link.hash === `#${entry.target.id}`));
+        });
+      }, { rootMargin: '-25% 0px -65% 0px' });
+      sections.forEach(section => sectionObserver.observe(section));
+
+      const themeButton = document.getElementById('themeButton');
+      if (safeGet('revisao-theme') === 'dark') body.classList.add('dark');
+      themeButton.addEventListener('click', () => {
+        body.classList.toggle('dark');
+        safeSet('revisao-theme', body.classList.contains('dark') ? 'dark' : 'light');
+      });
+
+      const sizes = [16, 18, 20];
+      let sizeIndex = Number(safeGet('revisao-font') || 0);
+      if (!sizes[sizeIndex]) sizeIndex = 0;
+      document.documentElement.style.setProperty('--base-size', `${sizes[sizeIndex]}px`);
+      document.getElementById('fontButton').addEventListener('click', () => {
+        sizeIndex = (sizeIndex + 1) % sizes.length;
+        document.documentElement.style.setProperty('--base-size', `${sizes[sizeIndex]}px`);
+        safeSet('revisao-font', String(sizeIndex));
+      });
+
+      document.querySelectorAll('.reveal-btn').forEach(button => {
+        button.addEventListener('click', () => {
+          const scenario = button.closest('.scenario');
+          scenario.classList.toggle('revealed');
+          const open = scenario.classList.contains('revealed');
+          button.textContent = open ? 'Ocultar análise' : 'Revelar análise';
+        });
+      });
+
+      const flashcards = [
+        ['Aula 5', 'O que diferencia GO com restrições de um GO irrestrito?', 'O avanço é permitido apenas sob condições explícitas, com limites, responsáveis e pendências controladas.'],
+        ['Aula 5', 'Por que um hash correto não autoriza PROD?', 'Porque ele comprova a integridade do pacote, mas não comprova parametrização, migração, testes, aceite e rollback.'],
+        ['Aula 5', 'Quais elementos tornam um rollback verificável?', 'Gatilho, autoridade, estado anterior, procedimento, tempo, teste de restauração e validação.'],
+        ['Aula 6', 'Qual é a sequência segura da implantação?', 'Preparar, instalar, configurar, migrar, testar e validar.'],
+        ['Aula 6', 'O que deve ser conferido após a migração?', 'Contagens, status, IDs, duplicidades e uma amostra dos registros.'],
+        ['Aula 6', 'O que um smoke test não substitui?', 'Homologação funcional, testes de segurança e aceite do cliente.'],
+        ['Aula 7', 'Quais campos formam um caso de teste reproduzível?', 'ID, objetivo, pré-condição, passos, esperado, obtido, evidência e status.'],
+        ['Aula 7', 'Por que preservar uma falha depois da correção?', 'Porque o histórico antes/depois demonstra rastreabilidade, controle e aprendizagem.'],
+        ['Aula 7', 'Qual é o limite do aceite da oficina?', 'Ele vale para a versão 1.0.0 em HOM e para o escopo testado; não libera automaticamente PROD.']
+      ];
+      let flashIndex = 0;
+      const flashcard = document.getElementById('flashcard');
+      function renderFlash() {
+        const [lesson, question, answer] = flashcards[flashIndex];
+        flashcard.classList.remove('flipped');
+        document.getElementById('flashLesson').textContent = lesson;
+        document.getElementById('flashQuestion').textContent = question;
+        document.getElementById('flashAnswer').textContent = answer;
+        document.getElementById('flashCount').textContent = `${flashIndex + 1} / ${flashcards.length}`;
+      }
+      function moveFlash(delta) { flashIndex = (flashIndex + delta + flashcards.length) % flashcards.length; renderFlash(); }
+      flashcard.addEventListener('click', () => flashcard.classList.toggle('flipped'));
+      document.getElementById('flipFlash').addEventListener('click', () => flashcard.classList.toggle('flipped'));
+      document.getElementById('prevFlash').addEventListener('click', () => moveFlash(-1));
+      document.getElementById('nextFlash').addEventListener('click', () => moveFlash(1));
+
+      const quizForm = document.getElementById('quizForm');
+      const questions = [...quizForm.querySelectorAll('.question')];
+      quizForm.addEventListener('submit', event => {
+        event.preventDefault();
+        let score = 0;
+        let unanswered = 0;
+        const misses = {};
+        questions.forEach((question, index) => {
+          question.classList.remove('correct', 'incorrect');
+          const selected = quizForm.querySelector(`input[name="q${index + 1}"]:checked`);
+          if (!selected) { unanswered += 1; return; }
+          const correct = selected.value === question.dataset.answer;
+          question.classList.add(correct ? 'correct' : 'incorrect');
+          if (correct) score += 1;
+          else misses[question.dataset.topic] = (misses[question.dataset.topic] || 0) + 1;
+        });
+        const result = document.getElementById('quizResult');
+        result.classList.add('visible');
+        if (unanswered) {
+          result.className = 'quiz-result visible callout warning';
+          result.innerHTML = `<strong>Faltam ${unanswered} resposta(s).</strong> Complete o quiz para receber o diagnóstico.`;
+          document.getElementById('quizScore').textContent = `${score} / 12`;
+          return;
+        }
+        const percent = Math.round(score / questions.length * 100);
+        const diagnosis = score >= 10 ? 'Ótimo domínio. Revise apenas os comentários das questões erradas.' : score >= 7 ? 'Bom caminho. Releia os temas indicados antes de avançar.' : 'Retome os resumos das Aulas 5, 6 e 7 e tente novamente.';
+        const topics = Object.keys(misses).length ? ` Priorize: ${Object.keys(misses).join(', ')}.` : ' Você acertou todos os temas.';
+        result.className = `quiz-result visible callout ${score >= 10 ? 'success' : 'warning'}`;
+        result.innerHTML = `<strong>${score} de ${questions.length} — ${percent}%.</strong> ${diagnosis}${topics}`;
+        document.getElementById('quizScore').textContent = `${score} / 12`;
+        safeSet('revisao-last-score', String(score));
+        result.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      });
+      document.getElementById('resetQuiz').addEventListener('click', () => {
+        quizForm.reset();
+        questions.forEach(q => q.classList.remove('correct', 'incorrect'));
+        document.getElementById('quizResult').className = 'quiz-result';
+        document.getElementById('quizScore').textContent = '— / 12';
+      });
+
+      document.querySelectorAll('[data-check]').forEach(input => {
+        const key = `revisao-check-${input.dataset.check}`;
+        input.checked = safeGet(key) === '1';
+        input.addEventListener('change', () => safeSet(key, input.checked ? '1' : '0'));
+      });
+      const notes = document.getElementById('studentNotes');
+      const saveState = document.getElementById('saveState');
+      notes.value = safeGet('revisao-notes') || '';
+      let saveTimer;
+      notes.addEventListener('input', () => {
+        clearTimeout(saveTimer);
+        saveState.textContent = 'Salvando...';
+        saveTimer = setTimeout(() => {
+          safeSet('revisao-notes', notes.value);
+          saveState.textContent = 'Anotações salvas neste navegador.';
+        }, 500);
+      });
+
+      let presentIndex = 0;
+      const presentCounter = document.getElementById('presentCounter');
+      function showPresentSection() {
+        sections.forEach((section, index) => section.classList.toggle('present-active', index === presentIndex));
+        presentCounter.textContent = `${presentIndex + 1} / ${sections.length}`;
+      }
+      function startPresentation() {
+        presentIndex = Math.max(0, sections.findIndex(section => section.getBoundingClientRect().top >= 0));
+        body.classList.add('presentation');
+        showPresentSection();
+      }
+      function exitPresentation() {
+        body.classList.remove('presentation');
+        sections.forEach(section => section.classList.remove('present-active'));
+      }
+      function movePresentation(delta) {
+        presentIndex = Math.max(0, Math.min(sections.length - 1, presentIndex + delta));
+        showPresentSection();
+      }
+      document.getElementById('presentButton').addEventListener('click', startPresentation);
+      document.getElementById('presentPrev').addEventListener('click', () => movePresentation(-1));
+      document.getElementById('presentNext').addEventListener('click', () => movePresentation(1));
+      document.getElementById('presentExit').addEventListener('click', exitPresentation);
+      document.addEventListener('keydown', event => {
+        if (!body.classList.contains('presentation')) return;
+        if (['ArrowRight', 'PageDown', ' '].includes(event.key)) { event.preventDefault(); movePresentation(1); }
+        if (['ArrowLeft', 'PageUp'].includes(event.key)) { event.preventDefault(); movePresentation(-1); }
+        if (event.key === 'Escape') exitPresentation();
+      });
+    })();
+  </script>
+</body>
+</html>

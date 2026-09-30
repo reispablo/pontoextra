@@ -22,6 +22,8 @@ testes/           materiais disponíveis para download na aba Testes
 
 O arquivo [`implantação/Aula_Revisao_Prova_1_a_4.html`](implantação/Aula_Revisao_Prova_1_a_4.html) pode ser baixado diretamente na aba **Implantação**.
 
+O arquivo [`implantação/Aula_Revisao_Prova_5_a_7.html`](implantação/Aula_Revisao_Prova_5_a_7.html) também está disponível na aba **Implantação** para o estudo das aulas 5, 6 e 7.
+
 O arquivo [`testes/Revisao 09-09.html`](testes/Revisao%2009-09.html) pode ser baixado diretamente na aba **Testes**.
 
 Como esta é uma página estática, ao adicionar outro material às pastas `implantação/` ou `testes/`, inclua também um link para ele no bloco `.downloads` da turma correspondente em [`index.html`](index.html).
