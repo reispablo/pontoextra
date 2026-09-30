@@ -1,7 +1,7 @@
 // Data e hora de término da prova de cada turma (horário local).
 // O contador regressivo em app.js conta até esse instante.
 const PROVAS = {
-  implantacao: "2026-10-20T19:00:00",
+  implantacao: "2026-10-06T19:00:00",
   testes: "2026-11-11T19:00:00",
 };
 
