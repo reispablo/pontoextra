@@ -24,6 +24,8 @@ O arquivo [`implantação/Aula_Revisao_Prova_1_a_4.html`](implantação/Aula_Rev
 
 O arquivo [`implantação/Aula_Revisao_Prova_5_a_7.html`](implantação/Aula_Revisao_Prova_5_a_7.html) também está disponível na aba **Implantação** para o estudo das aulas 5, 6 e 7.
 
+O arquivo [`implantação/Revisao_Implantacao_Narrada.html`](implantação/Revisao_Implantacao_Narrada.html) está disponível na aba **Implantação** como apresentação interativa com narração das aulas 5, 6 e 7.
+
 O arquivo [`testes/Revisao 09-09.html`](testes/Revisao%2009-09.html) pode ser baixado diretamente na aba **Testes**.
 
 Como esta é uma página estática, ao adicionar outro material às pastas `implantação/` ou `testes/`, inclua também um link para ele no bloco `.downloads` da turma correspondente em [`index.html`](index.html).
