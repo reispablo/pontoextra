@@ -2,10 +2,11 @@
 
 Mural com a lista de alunos que ganharam ponto extra, separados por turma.
 
-## Turmas
+## Abas
 
 - **Implantação**
 - **Testes**
+- **Extra do Extra** — informa o ponto conquistado no trabalho
 
 ## Estrutura do projeto
 

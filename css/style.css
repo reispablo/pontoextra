@@ -14,6 +14,8 @@
   --tab-implantacao-soft: #dfe9e4;
   --tab-testes: #5c4a8a;
   --tab-testes-soft: #e7e2f2;
+  --tab-extra: #9a5b24;
+  --tab-extra-soft: #f4e2cf;
 
   --shadow: 0 1px 2px rgba(28, 43, 36, 0.06), 0 8px 24px rgba(28, 43, 36, 0.06);
 }
@@ -35,6 +37,8 @@
     --tab-implantacao-soft: #1e2d29;
     --tab-testes: #ac96e0;
     --tab-testes-soft: #262038;
+    --tab-extra: #e0a96d;
+    --tab-extra-soft: #362719;
 
     --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.35);
   }
@@ -56,6 +60,8 @@
   --tab-implantacao-soft: #1e2d29;
   --tab-testes: #ac96e0;
   --tab-testes-soft: #262038;
+  --tab-extra: #e0a96d;
+  --tab-extra-soft: #362719;
 
   --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.35);
 }
@@ -227,6 +233,10 @@ h1 {
   color: var(--tab-testes);
 }
 
+.tab-btn[data-tab="extra-do-extra"][aria-selected="true"] {
+  color: var(--tab-extra);
+}
+
 /* Panel */
 .panel {
   display: none;
@@ -265,6 +275,7 @@ h1 {
 
 .panel[data-tab="implantacao"] .panel-title { color: var(--tab-implantacao); }
 .panel[data-tab="testes"] .panel-title { color: var(--tab-testes); }
+.panel[data-tab="extra-do-extra"] .panel-title { color: var(--tab-extra); }
 
 .panel-sub {
   font-size: 0.85rem;
@@ -558,6 +569,39 @@ h1 {
   display: block;
 }
 
+/* Destaque do ponto extra no trabalho */
+.extra-work-message {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 24px;
+  color: var(--tab-extra);
+  background: var(--tab-extra-soft);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+}
+
+.extra-work-icon {
+  display: grid;
+  place-items: center;
+  flex: 0 0 44px;
+  width: 44px;
+  height: 44px;
+  color: var(--tab-extra-soft);
+  background: var(--tab-extra);
+  border-radius: 50%;
+  font-size: 1.15rem;
+}
+
+.extra-work-message p {
+  margin: 0;
+  color: var(--text);
+  font-family: "Fraunces", ui-serif, Georgia, serif;
+  font-size: clamp(1.15rem, 3vw, 1.5rem);
+  font-weight: 600;
+}
+
 footer.note {
   margin-top: 32px;
   padding: 0 4px;
@@ -568,6 +612,15 @@ footer.note {
 @media (max-width: 480px) {
   .page {
     padding: 36px 16px 64px;
+  }
+
+  .tabs {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .tab-btn[data-tab="extra-do-extra"] {
+    grid-column: 1 / -1;
   }
 
   .schedule-grid {

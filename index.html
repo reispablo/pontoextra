@@ -36,12 +36,15 @@
       <h1>Mural de Pontos Extras</h1>
     </header>
 
-    <div class="tabs" role="tablist" aria-label="Turmas">
+    <div class="tabs" role="tablist" aria-label="Seções do mural">
       <button class="tab-btn" role="tab" data-tab="implantacao" aria-selected="true" id="tab-btn-implantacao" aria-controls="panel-implantacao">
         Implantação <span class="tab-count" id="count-implantacao">0</span>
       </button>
       <button class="tab-btn" role="tab" data-tab="testes" aria-selected="false" id="tab-btn-testes" aria-controls="panel-testes">
         Testes <span class="tab-count" id="count-testes">0</span>
+      </button>
+      <button class="tab-btn" role="tab" data-tab="extra-do-extra" aria-selected="false" id="tab-btn-extra-do-extra" aria-controls="panel-extra-do-extra">
+        Extra do Extra
       </button>
     </div>
 
@@ -152,6 +155,16 @@
         </a>
       </section>
       <div id="list-testes"></div>
+    </section>
+
+    <section class="panel" data-tab="extra-do-extra" role="tabpanel" id="panel-extra-do-extra" aria-labelledby="tab-btn-extra-do-extra">
+      <div class="panel-head">
+        <h2 class="panel-title">Extra do Extra</h2>
+      </div>
+      <div class="extra-work-message">
+        <span class="extra-work-icon" aria-hidden="true">★</span>
+        <p>Ganhou 1 ponto no trabalho</p>
+      </div>
     </section>
 
     <footer class="note">Atualizado conforme os nomes forem enviados.</footer>
