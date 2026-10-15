@@ -236,6 +236,10 @@ h1 {
 .tab-btn[data-tab="extra-do-extra"][aria-selected="true"] {
   color: var(--tab-extra);
 }
+.tab-btn[data-tab="extra-do-extra"][aria-selected="true"] .tab-count {
+  background: var(--tab-extra-soft);
+  color: var(--tab-extra);
+}
 
 /* Panel */
 .panel {
@@ -580,6 +584,7 @@ h1 {
   border: 1px solid var(--border);
   border-radius: 14px;
   box-shadow: var(--shadow);
+  margin-bottom: 14px;
 }
 
 .extra-work-icon {

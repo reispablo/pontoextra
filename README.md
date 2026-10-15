@@ -43,6 +43,9 @@ const ALUNOS = {
   testes: [
     "Nome do aluno",
   ],
+  "extra-do-extra": [
+    "Nome do aluno",
+  ],
 };
 ```
 

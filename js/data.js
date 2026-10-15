@@ -48,4 +48,12 @@ const ALUNOS = {
     "Bruna Monique da Silva",
     "Rafaelly Cristini de Souza"
   ],
+  "extra-do-extra": [
+    "Ulf Gunnar Silva Pettersson",
+    "Igor Flores",
+    "Heloiza Camargo",
+    "Ruan Guilherme Rodrigues Barbosa",
+    "Joao Gabriel Poteriko",
+    "Rafaelly Cristini de Souza"
+  ],
 };
