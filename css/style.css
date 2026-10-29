@@ -352,6 +352,10 @@ h1 {
   text-transform: uppercase;
 }
 
+.schedule[data-tab="testes"] .schedule-eyebrow {
+  color: var(--tab-testes);
+}
+
 .schedule h3 {
   margin: 0;
   font-family: "Fraunces", ui-serif, Georgia, serif;
@@ -381,12 +385,20 @@ h1 {
   box-shadow: var(--shadow);
 }
 
+.schedule[data-tab="testes"] .schedule-card {
+  border-left-color: var(--tab-testes);
+}
+
 .schedule-card time {
   color: var(--tab-implantacao);
   font-family: "IBM Plex Mono", ui-monospace, monospace;
   font-size: 1rem;
   font-weight: 500;
   font-variant-numeric: tabular-nums;
+}
+
+.schedule[data-tab="testes"] .schedule-card time {
+  color: var(--tab-testes);
 }
 
 .schedule-card span {
@@ -403,6 +415,10 @@ h1 {
 
 .schedule-card-featured {
   background: var(--tab-implantacao-soft);
+}
+
+.schedule[data-tab="testes"] .schedule-card-featured {
+  background: var(--tab-testes-soft);
 }
 
 /* Materiais para download */
