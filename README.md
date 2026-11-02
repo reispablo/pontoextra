@@ -29,6 +29,8 @@ O arquivo [`implantação/Revisao_Implantacao_Narrada.html`](implantação/Revis
 
 O arquivo [`testes/Revisao 09-09.html`](testes/Revisao%2009-09.html) pode ser baixado diretamente na aba **Testes**.
 
+O arquivo [`testes/Revisao 11-11.html`](testes/Revisao%2011-11.html) também está disponível na aba **Testes** para a revisão da prova de 11/11/2026 (APIs REST e Cypress).
+
 A aba **Testes** também exibe o exercício avaliativo de APIs com Cypress agendado para 04/11/2026, a prova de 11/11/2026 e a recuperação de 18/11/2026.
 
 Como esta é uma página estática, ao adicionar outro material às pastas `implantação/` ou `testes/`, inclua também um link para ele no bloco `.downloads` da turma correspondente em [`index.html`](index.html).

@@ -1,0 +1,878 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Material de revisão da Aula 11 sobre APIs REST, métodos HTTP, códigos de status e testes com Cypress.">
+  <title>Revisão — APIs REST e Cypress | Aula 11</title>
+  <style>
+    :root {
+      --senai-blue: #00579b;
+      --senai-blue-dark: #003f73;
+      --senai-blue-soft: #eaf5fc;
+      --senai-orange: #f25b35;
+      --senai-yellow: #f7b900;
+      --ink: #162330;
+      --muted: #5b6b78;
+      --line: #cfdae2;
+      --surface: #ffffff;
+      --surface-soft: #f4f7f9;
+      --success: #16784a;
+      --danger: #b42318;
+      --shadow: 0 14px 38px rgba(17, 53, 80, .12);
+      --radius: 18px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: #edf2f5;
+      font: 16px/1.6 Arial, Helvetica, sans-serif;
+    }
+    button, input { font: inherit; }
+    a { color: var(--senai-blue); }
+    code, pre { font-family: Consolas, "Courier New", monospace; }
+    code {
+      padding: .12em .34em;
+      border-radius: 5px;
+      background: #e9eef2;
+      color: #17354b;
+      font-size: .92em;
+    }
+    pre {
+      margin: 16px 0;
+      padding: 18px;
+      border: 1px solid #294d64;
+      border-radius: 12px;
+      overflow: auto;
+      color: #edf7ff;
+      background: #112b3c;
+      font-size: .9rem;
+      line-height: 1.55;
+      white-space: pre-wrap;
+    }
+    pre code { padding: 0; color: inherit; background: transparent; font-size: inherit; }
+    h1, h2, h3 { line-height: 1.16; }
+    h1 { margin: 10px 0 16px; font-size: clamp(2rem, 5vw, 3.8rem); letter-spacing: -.04em; }
+    h2 { margin: 0 0 12px; color: var(--senai-blue-dark); font-size: clamp(1.55rem, 3vw, 2.15rem); }
+    h3 { margin: 0 0 8px; font-size: 1.08rem; }
+    p { margin: 0 0 12px; }
+    ul, ol { margin: 8px 0 0; padding-left: 22px; }
+    li + li { margin-top: 6px; }
+
+    .skip-link {
+      position: fixed;
+      top: 8px;
+      left: 8px;
+      z-index: 20;
+      padding: 8px 12px;
+      transform: translateY(-160%);
+      color: #fff;
+      background: var(--senai-blue-dark);
+      border-radius: 6px;
+    }
+    .skip-link:focus { transform: translateY(0); }
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      border-bottom: 1px solid rgba(255,255,255,.18);
+      background: rgba(0, 70, 127, .96);
+      color: #fff;
+      backdrop-filter: blur(10px);
+    }
+    .topbar-inner {
+      width: min(1160px, calc(100% - 32px));
+      margin: auto;
+      min-height: 62px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+    }
+    .brand { display: flex; align-items: center; gap: 12px; white-space: nowrap; }
+    .wordmark {
+      color: #fff;
+      font-size: 1.45rem;
+      font-weight: 900;
+      font-style: italic;
+      letter-spacing: -.08em;
+    }
+    .brand small { color: #d9efff; font-weight: 700; }
+    .top-actions { display: flex; align-items: center; gap: 8px; }
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 42px;
+      padding: 9px 15px;
+      border: 0;
+      border-radius: 8px;
+      cursor: pointer;
+      color: #fff;
+      background: var(--senai-blue);
+      font-weight: 800;
+      text-decoration: none;
+    }
+    .button:hover { filter: brightness(.94); }
+    .button:focus-visible, input:focus-visible, summary:focus-visible {
+      outline: 3px solid var(--senai-yellow);
+      outline-offset: 3px;
+    }
+    .button-light { color: var(--senai-blue-dark); background: #fff; }
+    .button-secondary { color: var(--senai-blue-dark); background: var(--senai-blue-soft); }
+
+    .hero {
+      color: #fff;
+      background:
+        radial-gradient(circle at 86% 18%, rgba(247,185,0,.28) 0 8%, transparent 8.4%),
+        radial-gradient(circle at 88% 35%, rgba(242,91,53,.32) 0 13%, transparent 13.4%),
+        linear-gradient(135deg, var(--senai-blue-dark), var(--senai-blue));
+    }
+    .hero-inner {
+      width: min(1160px, calc(100% - 32px));
+      min-height: 440px;
+      margin: auto;
+      padding: 70px 0 60px;
+      display: grid;
+      grid-template-columns: 1.35fr .65fr;
+      gap: 52px;
+      align-items: center;
+    }
+    .eyebrow { margin: 0; color: #bfe5ff; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
+    .lead { max-width: 720px; color: #e5f5ff; font-size: 1.14rem; }
+    .hero-card {
+      padding: 24px;
+      border: 1px solid rgba(255,255,255,.26);
+      border-radius: var(--radius);
+      background: rgba(0,38,71,.35);
+      box-shadow: var(--shadow);
+    }
+    .hero-card strong { display: block; margin-bottom: 8px; color: #fff; font-size: 1.05rem; }
+    .hero-card ol { color: #e5f5ff; }
+    .hero-card li::marker { color: var(--senai-yellow); font-weight: 900; }
+
+    .section-nav {
+      border-bottom: 1px solid var(--line);
+      background: var(--surface);
+    }
+    .section-nav-inner {
+      width: min(1160px, calc(100% - 32px));
+      margin: auto;
+      padding: 13px 0;
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+    }
+    .section-nav a {
+      padding: 7px 11px;
+      border-radius: 999px;
+      color: var(--senai-blue-dark);
+      background: var(--senai-blue-soft);
+      font-size: .88rem;
+      font-weight: 800;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    main { width: min(1160px, calc(100% - 32px)); margin: 0 auto; }
+    .content-section { padding: 64px 0; scroll-margin-top: 75px; }
+    .content-section + .content-section { border-top: 1px solid var(--line); }
+    .section-intro { max-width: 790px; margin-bottom: 28px; color: var(--muted); font-size: 1.05rem; }
+    .kicker { color: var(--senai-orange); font-weight: 900; letter-spacing: .1em; text-transform: uppercase; font-size: .78rem; }
+    .grid { display: grid; gap: 18px; }
+    .grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .grid-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .card {
+      padding: 22px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface);
+      box-shadow: 0 8px 22px rgba(21, 55, 77, .06);
+    }
+    .card p:last-child { margin-bottom: 0; }
+    .method-card { position: relative; overflow: hidden; padding-top: 58px; }
+    .method {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      padding: 10px 20px;
+      color: #fff;
+      font-weight: 900;
+      letter-spacing: .08em;
+    }
+    .get { background: #087db5; }
+    .post { background: #16834f; }
+    .put { background: #b56b00; }
+    .delete { background: #b42318; }
+    .route { display: block; margin: 9px 0 12px; font-weight: 800; }
+    .pill {
+      display: inline-block;
+      margin: 4px 4px 0 0;
+      padding: 4px 8px;
+      border-radius: 999px;
+      color: var(--senai-blue-dark);
+      background: var(--senai-blue-soft);
+      font-size: .78rem;
+      font-weight: 800;
+    }
+    .callout {
+      margin-top: 20px;
+      padding: 18px 20px;
+      border-left: 5px solid var(--senai-yellow);
+      border-radius: 8px;
+      background: #fff8dc;
+    }
+    .callout strong { color: #6c5000; }
+    .callout.danger { border-left-color: var(--senai-orange); background: #fff1ec; }
+    .callout.info { border-left-color: var(--senai-blue); background: var(--senai-blue-soft); }
+
+    .flow {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr auto 1fr;
+      gap: 12px;
+      align-items: stretch;
+    }
+    .flow-step {
+      padding: 22px;
+      border-radius: 14px;
+      color: var(--senai-blue-dark);
+      background: var(--senai-blue-soft);
+      text-align: center;
+    }
+    .flow-step b { display: block; margin-bottom: 6px; }
+    .arrow { align-self: center; color: var(--senai-orange); font-size: 1.8rem; font-weight: 900; }
+    .anatomy { border-collapse: collapse; width: 100%; background: #fff; }
+    .anatomy th, .anatomy td { padding: 13px 14px; border: 1px solid var(--line); text-align: left; vertical-align: top; }
+    .anatomy th { color: var(--senai-blue-dark); background: var(--senai-blue-soft); }
+
+    .status-grid { display: grid; grid-template-columns: 88px 1fr 1.35fr; border: 1px solid var(--line); border-radius: 14px; overflow: hidden; }
+    .status-grid > div { padding: 12px 14px; border-bottom: 1px solid var(--line); background: #fff; }
+    .status-grid > div:nth-last-child(-n+3) { border-bottom: 0; }
+    .status-grid .status-head { color: #fff; background: var(--senai-blue-dark); font-weight: 800; }
+    .status-code { font-weight: 900; color: var(--senai-blue-dark); }
+    .status-ok { border-left: 5px solid var(--success); }
+    .status-client { border-left: 5px solid var(--senai-orange); }
+    .status-server { border-left: 5px solid var(--danger); }
+    .compare {
+      margin: 24px 0;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 14px;
+      align-items: stretch;
+    }
+    .compare-card { padding: 24px; border: 2px solid var(--line); border-radius: var(--radius); background: #fff; }
+    .compare-card strong { display: block; color: var(--senai-blue); font-size: 1.7rem; }
+    .compare-vs { align-self: center; color: var(--senai-orange); font-weight: 900; }
+
+    .sequence { counter-reset: step; display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; }
+    .sequence article {
+      counter-increment: step;
+      min-height: 160px;
+      padding: 18px 14px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #fff;
+    }
+    .sequence article::before {
+      content: counter(step);
+      display: grid;
+      width: 30px;
+      height: 30px;
+      margin-bottom: 12px;
+      place-items: center;
+      border-radius: 50%;
+      color: #fff;
+      background: var(--senai-blue);
+      font-weight: 900;
+    }
+
+    .code-layout { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(290px, .75fr); gap: 20px; align-items: start; }
+    .line-notes { display: grid; gap: 10px; }
+    .line-note { padding: 13px 15px; border-left: 4px solid var(--senai-blue); background: #fff; border-radius: 6px; }
+    .line-note b { color: var(--senai-blue-dark); }
+    details {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #fff;
+    }
+    details + details { margin-top: 10px; }
+    summary { padding: 14px 16px; cursor: pointer; color: var(--senai-blue-dark); font-weight: 800; }
+    details > div { padding: 0 16px 16px; }
+
+    .quiz { display: grid; gap: 18px; }
+    .question {
+      margin: 0;
+      padding: 20px;
+      border: 2px solid var(--line);
+      border-radius: 14px;
+      background: #fff;
+    }
+    .question.correct { border-color: var(--success); background: #f0fbf5; }
+    .question.incorrect { border-color: var(--danger); background: #fff5f3; }
+    .question legend { padding: 0 8px; font-weight: 900; color: var(--senai-blue-dark); }
+    .option {
+      display: flex;
+      gap: 10px;
+      margin-top: 8px;
+      padding: 10px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      background: var(--surface-soft);
+    }
+    .option:hover { background: var(--senai-blue-soft); }
+    .option input { width: 18px; height: 18px; margin-top: 3px; accent-color: var(--senai-blue); }
+    .explanation { margin: 14px 0 0; padding: 12px 14px; border-radius: 8px; background: #e7eef3; }
+    .quiz-actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+    .score {
+      min-height: 52px;
+      margin-top: 16px;
+      padding: 14px 18px;
+      border-radius: 10px;
+      color: var(--senai-blue-dark);
+      background: var(--senai-blue-soft);
+      font-weight: 900;
+    }
+
+    .checklist { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px 18px; }
+    .check-item { display: flex; gap: 10px; padding: 14px; border-radius: 10px; background: #fff; }
+    .check-item input { flex: 0 0 auto; width: 20px; height: 20px; margin-top: 2px; accent-color: var(--success); }
+    .footer {
+      margin-top: 40px;
+      padding: 34px 16px;
+      color: #d9efff;
+      background: var(--senai-blue-dark);
+      text-align: center;
+    }
+    .footer strong { color: #fff; }
+
+    @media (max-width: 920px) {
+      .hero-inner, .code-layout { grid-template-columns: 1fr; }
+      .hero-inner { gap: 24px; }
+      .grid-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .grid-3 { grid-template-columns: 1fr; }
+      .sequence { grid-template-columns: repeat(3, 1fr); }
+    }
+    @media (max-width: 650px) {
+      body { font-size: 15px; }
+      .topbar-inner { min-height: 58px; }
+      .brand small { display: none; }
+      .top-actions .button:first-child { display: none; }
+      .hero-inner { min-height: auto; padding: 48px 0; }
+      .grid-2, .grid-4, .checklist { grid-template-columns: 1fr; }
+      .flow { grid-template-columns: 1fr; }
+      .arrow { transform: rotate(90deg); justify-self: center; }
+      .status-grid { grid-template-columns: 72px 1fr; }
+      .status-grid > div:nth-child(3n) { grid-column: 1 / -1; padding-top: 0; }
+      .status-grid .status-head:nth-child(3) { display: none; }
+      .status-grid > div:nth-last-child(-n+3) { border-bottom: 1px solid var(--line); }
+      .status-grid > div:last-child { border-bottom: 0; }
+      .compare { grid-template-columns: 1fr; }
+      .compare-vs { justify-self: center; }
+      .sequence { grid-template-columns: 1fr 1fr; }
+    }
+    @media print {
+      body { color: #000; background: #fff; font-size: 10pt; }
+      .topbar, .section-nav, .quiz-actions, .check-item input { display: none !important; }
+      .hero { color: #000; background: #fff; border-bottom: 3px solid var(--senai-blue); }
+      .hero-inner { min-height: auto; padding: 12mm 0 8mm; grid-template-columns: 1.35fr .65fr; }
+      .eyebrow, .lead, .hero-card ol { color: #263b4a; }
+      .hero-card { border-color: var(--line); background: #fff; box-shadow: none; }
+      .hero-card strong { color: #000; }
+      main, .hero-inner { width: 100%; }
+      .content-section { padding: 9mm 0; }
+      .card, .question, details, .compare-card, .sequence article { box-shadow: none; break-inside: avoid; }
+      .grid-4 { grid-template-columns: repeat(2, 1fr); }
+      .sequence { grid-template-columns: repeat(3, 1fr); }
+      .explanation[hidden] { display: block; }
+      .footer { margin-top: 8mm; padding: 8mm; color: #000; background: #fff; border-top: 2px solid var(--senai-blue); }
+      .footer strong { color: #000; }
+      @page { size: A4; margin: 14mm; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#conteudo">Ir para o conteúdo</a>
+
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand"><span class="wordmark">SENAI</span><small>Teste de Sistemas</small></div>
+      <div class="top-actions">
+        <a class="button button-light" href="#quiz">Fazer o quiz</a>
+        <button class="button button-light" type="button" onclick="window.print()">Imprimir / PDF</button>
+      </div>
+    </div>
+  </header>
+
+  <section class="hero" aria-labelledby="titulo-principal">
+    <div class="hero-inner">
+      <div>
+        <p class="eyebrow">Aula 11 • Guia de revisão</p>
+        <h1 id="titulo-principal">APIs REST e testes com Cypress</h1>
+        <p class="lead">Revise como uma requisição é formada, quando usar <strong>GET, POST, PUT e DELETE</strong>, como interpretar códigos HTTP e o que um teste de API realmente comprova.</p>
+      </div>
+      <aside class="hero-card" aria-label="Roteiro sugerido">
+        <strong>Roteiro de 30 minutos</strong>
+        <ol>
+          <li>Leia o mapa da requisição.</li>
+          <li>Compare os quatro métodos.</li>
+          <li>Revise os códigos de status.</li>
+          <li>Interprete os testes Cypress.</li>
+          <li>Finalize com o quiz.</li>
+        </ol>
+      </aside>
+    </div>
+  </section>
+
+  <nav class="section-nav" aria-label="Seções da revisão">
+    <div class="section-nav-inner">
+      <a href="#fundamentos">Fundamentos</a>
+      <a href="#metodos">Métodos HTTP</a>
+      <a href="#requisicao">Request e response</a>
+      <a href="#status">Status HTTP</a>
+      <a href="#crud">Fluxo CRUD</a>
+      <a href="#cypress">Cypress</a>
+      <a href="#quiz">Quiz</a>
+      <a href="#checklist">Checklist</a>
+    </div>
+  </nav>
+
+  <main id="conteudo">
+    <section class="content-section" id="fundamentos">
+      <p class="kicker">01 • Fundamentos</p>
+      <h2>O que uma API REST organiza?</h2>
+      <p class="section-intro">Uma API define um contrato para que sistemas troquem dados. Em REST, trabalhamos com <strong>recursos</strong>, identificados por rotas, e usamos métodos HTTP para expressar a ação desejada.</p>
+
+      <div class="flow" aria-label="Fluxo básico de uma chamada à API">
+        <div class="flow-step"><b>Cliente</b>Navegador, aplicativo ou teste Cypress.</div>
+        <div class="arrow" aria-hidden="true">→</div>
+        <div class="flow-step"><b>Requisição</b>Método + rota + headers + body.</div>
+        <div class="arrow" aria-hidden="true">→</div>
+        <div class="flow-step"><b>Resposta</b>Status + headers + body.</div>
+      </div>
+
+      <div class="grid grid-3" style="margin-top:18px">
+        <article class="card">
+          <h3>Recurso</h3>
+          <p>É a entidade manipulada pela API: cliente, produto, pedido ou configuração.</p>
+        </article>
+        <article class="card">
+          <h3>Coleção</h3>
+          <p><code>/api/clientes</code> representa o conjunto de clientes.</p>
+        </article>
+        <article class="card">
+          <h3>Item específico</h3>
+          <p><code>/api/clientes/42</code> normalmente representa o cliente cujo ID é 42.</p>
+        </article>
+      </div>
+
+      <div class="callout info"><strong>Boa rota REST:</strong> prefira substantivos que identifiquem recursos. O método já comunica a ação: <code>GET /clientes/42</code>, e não <code>GET /buscarCliente/42</code>.</div>
+    </section>
+
+    <section class="content-section" id="metodos">
+      <p class="kicker">02 • Métodos HTTP</p>
+      <h2>Qual método usar?</h2>
+      <p class="section-intro">Observe três perguntas: o que acontecerá com o recurso, qual rota será chamada e que resultado deve ser confirmado.</p>
+
+      <div class="grid grid-4">
+        <article class="card method-card">
+          <div class="method get">GET</div>
+          <h3>Consultar</h3>
+          <code class="route">GET /api/clientes/42</code>
+          <p>Busca dados sem criar, alterar ou excluir o recurso.</p>
+          <span class="pill">200 OK</span><span class="pill">404 Not Found</span>
+        </article>
+        <article class="card method-card">
+          <div class="method post">POST</div>
+          <h3>Criar</h3>
+          <code class="route">POST /api/clientes</code>
+          <p>Envia dados para criar um novo item na coleção.</p>
+          <span class="pill">201 Created</span><span class="pill">422 Validation</span>
+        </article>
+        <article class="card method-card">
+          <div class="method put">PUT</div>
+          <h3>Substituir/atualizar</h3>
+          <code class="route">PUT /api/clientes/42</code>
+          <p>No contrato estudado, envia o conjunto completo de campos editáveis.</p>
+          <span class="pill">200 OK</span><span class="pill">404 Not Found</span>
+        </article>
+        <article class="card method-card">
+          <div class="method delete">DELETE</div>
+          <h3>Excluir</h3>
+          <code class="route">DELETE /api/clientes/42</code>
+          <p>Remove o item identificado na rota.</p>
+          <span class="pill">204 No Content</span><span class="pill">404 Not Found</span>
+        </article>
+      </div>
+
+      <div class="callout"><strong>Atenção ao PUT:</strong> a regra exata depende do contrato da API. Nesta revisão, considere <code>PUT</code> como atualização completa do recurso. Para atualização parcial, muitas APIs utilizam <code>PATCH</code>.</div>
+    </section>
+
+    <section class="content-section" id="requisicao">
+      <p class="kicker">03 • Anatomia</p>
+      <h2>Request e response</h2>
+      <p class="section-intro">O teste não deve olhar apenas o status. Método, rota, autenticação, body, contrato da resposta e estado final formam a evidência completa.</p>
+
+      <div class="grid grid-2">
+        <article class="card">
+          <h3>Exemplo de requisição</h3>
+          <pre><code>POST /api/clientes HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer ACCESS_TOKEN
+
+{
+  "nome": "Cliente Teste",
+  "email": "cliente.teste@exemplo.com"
+}</code></pre>
+        </article>
+        <article class="card">
+          <h3>Exemplo de resposta</h3>
+          <pre><code>HTTP/1.1 201 Created
+Content-Type: application/json
+Location: /api/clientes/42
+
+{
+  "id": 42,
+  "nome": "Cliente Teste",
+  "email": "cliente.teste@exemplo.com"
+}</code></pre>
+        </article>
+      </div>
+
+      <div style="overflow-x:auto; margin-top:20px">
+        <table class="anatomy">
+          <thead><tr><th>Parte</th><th>Função</th><th>Exemplo</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Método</strong></td><td>Indica a intenção da chamada.</td><td><code>POST</code></td></tr>
+            <tr><td><strong>Rota</strong></td><td>Identifica o recurso ou coleção.</td><td><code>/api/clientes</code></td></tr>
+            <tr><td><strong>Headers</strong></td><td>Transportam metadados, tipo do conteúdo e autenticação.</td><td><code>Content-Type</code> e <code>Authorization</code></td></tr>
+            <tr><td><strong>Body</strong></td><td>Contém os dados enviados ou recebidos.</td><td>Objeto JSON</td></tr>
+            <tr><td><strong>Status</strong></td><td>Resume o resultado HTTP.</td><td><code>201 Created</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout danger"><strong>Segurança:</strong> nunca publique senha, token real, cookie de sessão ou dados pessoais nas evidências. Em exemplos, use valores fictícios como <code>ACCESS_TOKEN</code>.</div>
+    </section>
+
+    <section class="content-section" id="status">
+      <p class="kicker">04 • Códigos HTTP</p>
+      <h2>O status conta parte da história</h2>
+      <p class="section-intro">A família indica a categoria geral: <strong>2xx</strong> significa sucesso, <strong>4xx</strong> aponta um problema relacionado à requisição e <strong>5xx</strong> indica falha interna do servidor.</p>
+
+      <div class="compare" aria-label="Comparação entre os status 200 e 201">
+        <article class="compare-card">
+          <strong>200 OK</strong>
+          <p>A operação foi concluída com sucesso e existe uma representação no corpo. É comum em consultas e atualizações.</p>
+        </article>
+        <div class="compare-vs">×</div>
+        <article class="compare-card">
+          <strong>201 Created</strong>
+          <p>Um novo recurso foi criado. É a resposta mais específica para um <code>POST</code> de cadastro bem-sucedido.</p>
+        </article>
+      </div>
+
+      <div class="status-grid" role="table" aria-label="Tabela de códigos HTTP">
+        <div class="status-head" role="columnheader">Status</div><div class="status-head" role="columnheader">Significado</div><div class="status-head" role="columnheader">Quando esperar</div>
+        <div class="status-code status-ok">200</div><div><strong>OK</strong></div><div>Consulta ou atualização concluída, normalmente com body.</div>
+        <div class="status-code status-ok">201</div><div><strong>Created</strong></div><div>Novo recurso criado; pode incluir ID e header <code>Location</code>.</div>
+        <div class="status-code status-ok">204</div><div><strong>No Content</strong></div><div>Operação bem-sucedida sem corpo, comum após <code>DELETE</code>.</div>
+        <div class="status-code status-client">400</div><div><strong>Bad Request</strong></div><div>Requisição malformada ou que não pode ser interpretada.</div>
+        <div class="status-code status-client">401</div><div><strong>Unauthorized</strong></div><div>Autenticação ausente ou inválida.</div>
+        <div class="status-code status-client">403</div><div><strong>Forbidden</strong></div><div>Identidade reconhecida, mas sem permissão para a ação.</div>
+        <div class="status-code status-client">404</div><div><strong>Not Found</strong></div><div>Rota ou recurso solicitado não foi encontrado.</div>
+        <div class="status-code status-client">405</div><div><strong>Method Not Allowed</strong></div><div>A rota existe, mas não aceita o método utilizado.</div>
+        <div class="status-code status-client">422</div><div><strong>Unprocessable Content</strong></div><div>JSON compreendido, porém os dados violam regras de validação.</div>
+        <div class="status-code status-server">500</div><div><strong>Internal Server Error</strong></div><div>Falha inesperada no processamento do servidor.</div>
+      </div>
+
+      <div class="callout"><strong>Não confunda:</strong> receber <code>200</code> não prova sozinho que a funcionalidade inteira está correta. Depois de um <code>PUT</code>, por exemplo, um novo <code>GET</code> pode ser necessário para confirmar a persistência.</div>
+    </section>
+
+    <section class="content-section" id="crud">
+      <p class="kicker">05 • Estado final</p>
+      <h2>Como validar um fluxo CRUD</h2>
+      <p class="section-intro">Uma sequência de chamadas ajuda a confirmar não só a resposta imediata, mas também a mudança real do estado do recurso.</p>
+
+      <div class="sequence">
+        <article><h3>POST</h3><p>Crie o cliente e guarde o ID retornado.</p></article>
+        <article><h3>GET</h3><p>Consulte o ID e confirme os dados criados.</p></article>
+        <article><h3>PUT</h3><p>Atualize o recurso com novos dados.</p></article>
+        <article><h3>GET</h3><p>Confirme que a alteração foi persistida.</p></article>
+        <article><h3>DELETE</h3><p>Exclua exatamente o recurso criado no teste.</p></article>
+        <article><h3>GET</h3><p>Espere <code>404</code>: o recurso não deve mais existir.</p></article>
+      </div>
+
+      <div class="callout info"><strong>Evidência forte:</strong> valide o status, o formato do body, os valores importantes e uma consulta posterior. Se a API retornar <code>201</code>, mas o recurso não puder ser consultado, o cenário deve falhar.</div>
+    </section>
+
+    <section class="content-section" id="cypress">
+      <p class="kicker">06 • Automação</p>
+      <h2>Interpretando um teste Cypress</h2>
+      <p class="section-intro"><code>cy.request()</code> chama a API diretamente. Depois, o callback de <code>.then()</code> recebe a resposta para que as asserções verifiquem o comportamento esperado.</p>
+
+      <div class="code-layout">
+        <article>
+          <h3>Consulta autenticada</h3>
+          <pre><code>it('lista os clientes', () =&gt; {
+  cy.request({
+    method: 'GET',
+    url: '/api/clientes',
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }).then((resposta) =&gt; {
+    expect(resposta.status).to.eq(200)
+    expect(resposta.body.data).to.be.an('array')
+    expect(resposta.body.count)
+      .to.eq(resposta.body.data.length)
+  })
+})</code></pre>
+        </article>
+        <aside class="line-notes">
+          <div class="line-note"><b>method + url</b><br>Fazem um <code>GET</code> na coleção de clientes.</div>
+          <div class="line-note"><b>Authorization</b><br>Envia o token no padrão <code>Bearer</code>.</div>
+          <div class="line-note"><b>status 200</b><br>Confirma o sucesso HTTP da consulta.</div>
+          <div class="line-note"><b>data array</b><br>Valida parte do contrato do body.</div>
+          <div class="line-note"><b>count</b><br>Compara a contagem informada com o tamanho real da lista.</div>
+        </aside>
+      </div>
+
+      <h3 style="margin-top:32px">Cenário negativo: validação de e-mail</h3>
+      <pre><code>cy.request({
+  method: 'POST',
+  url: '/api/clientes',
+  headers: { Authorization: `Bearer ${token}` },
+  body: { nome: 'Cliente Teste', email: 'email-invalido' },
+  failOnStatusCode: false,
+}).then((resposta) =&gt; {
+  expect(resposta.status).to.eq(422)
+  expect(resposta.body.error.code).to.eq('validation_error')
+  expect(resposta.body.error.fields.email).to.exist
+})</code></pre>
+
+      <div class="grid grid-2">
+        <div class="callout info" style="margin:0"><strong>Por que usar <code>failOnStatusCode: false</code>?</strong><br>Para impedir que o Cypress encerre o comando automaticamente ao receber um status 4xx ou 5xx. Assim, o teste consegue analisar a resposta de erro esperada.</div>
+        <div class="callout danger" style="margin:0"><strong>O que essa opção não faz?</strong><br>Ela não transforma erro em sucesso e não aprova o cenário. As asserções ainda precisam confirmar o status e o contrato corretos.</div>
+      </div>
+
+      <div style="margin-top:28px">
+        <details>
+          <summary>Como ler qualquer teste de API?</summary>
+          <div><ol><li>Identifique o cenário descrito no <code>it</code>.</li><li>Localize método, rota, headers e body.</li><li>Descubra qual resposta é esperada.</li><li>Traduza cada <code>expect</code> em uma regra verificável.</li><li>Conclua o que o conjunto das asserções comprova — e o que ainda não comprova.</li></ol></div>
+        </details>
+        <details>
+          <summary>Qual a diferença entre status e contrato?</summary>
+          <div><p>O status resume o resultado HTTP. O contrato descreve a estrutura e os tipos do body. Um endpoint pode devolver <code>200</code> e ainda assim estar incorreto se <code>data</code> deveria ser um array, mas veio como texto.</p></div>
+        </details>
+      </div>
+    </section>
+
+    <section class="content-section" id="quiz">
+      <p class="kicker">07 • Autoavaliação</p>
+      <h2>Teste sua revisão</h2>
+      <p class="section-intro">Responda sem consultar as seções anteriores. A correção acontece somente no seu navegador e nenhum dado é enviado.</p>
+
+      <form id="quiz-form" class="quiz">
+        <fieldset class="question" data-answer="b">
+          <legend>1. Qual chamada consulta um cliente específico sem alterar dados?</legend>
+          <label class="option"><input type="radio" name="q1" value="a"> <span><code>POST /api/clientes</code></span></label>
+          <label class="option"><input type="radio" name="q1" value="b"> <span><code>GET /api/clientes/42</code></span></label>
+          <label class="option"><input type="radio" name="q1" value="c"> <span><code>DELETE /api/clientes/42</code></span></label>
+          <p class="explanation" hidden><strong>Resposta:</strong> <code>GET</code> consulta o recurso indicado na rota.</p>
+        </fieldset>
+
+        <fieldset class="question" data-answer="c">
+          <legend>2. Qual status comunica especificamente que um cadastro criou um recurso?</legend>
+          <label class="option"><input type="radio" name="q2" value="a"> <span><code>200 OK</code></span></label>
+          <label class="option"><input type="radio" name="q2" value="b"> <span><code>204 No Content</code></span></label>
+          <label class="option"><input type="radio" name="q2" value="c"> <span><code>201 Created</code></span></label>
+          <p class="explanation" hidden><strong>Resposta:</strong> <code>201 Created</code> indica que um novo recurso foi criado.</p>
+        </fieldset>
+
+        <fieldset class="question" data-answer="a">
+          <legend>3. O que informa o header <code>Content-Type: application/json</code>?</legend>
+          <label class="option"><input type="radio" name="q3" value="a"> <span>Que o corpo está no formato JSON.</span></label>
+          <label class="option"><input type="radio" name="q3" value="b"> <span>Que o token está correto.</span></label>
+          <label class="option"><input type="radio" name="q3" value="c"> <span>Que o recurso foi excluído.</span></label>
+          <p class="explanation" hidden><strong>Resposta:</strong> <code>Content-Type</code> descreve o tipo do conteúdo transportado no body.</p>
+        </fieldset>
+
+        <fieldset class="question" data-answer="b">
+          <legend>4. Uma rota protegida foi chamada sem token. Qual status é esperado?</legend>
+          <label class="option"><input type="radio" name="q4" value="a"> <span><code>201</code></span></label>
+          <label class="option"><input type="radio" name="q4" value="b"> <span><code>401</code></span></label>
+          <label class="option"><input type="radio" name="q4" value="c"> <span><code>500</code></span></label>
+          <p class="explanation" hidden><strong>Resposta:</strong> <code>401 Unauthorized</code> indica autenticação ausente ou inválida.</p>
+        </fieldset>
+
+        <fieldset class="question" data-answer="c">
+          <legend>5. Qual chamada representa uma atualização completa do cliente 42 no contrato estudado?</legend>
+          <label class="option"><input type="radio" name="q5" value="a"> <span><code>GET /api/clientes</code></span></label>
+          <label class="option"><input type="radio" name="q5" value="b"> <span><code>POST /api/clientes/42</code></span></label>
+          <label class="option"><input type="radio" name="q5" value="c"> <span><code>PUT /api/clientes/42</code></span></label>
+          <p class="explanation" hidden><strong>Resposta:</strong> <code>PUT</code> atualiza o item identificado; neste contrato, envia os campos editáveis completos.</p>
+        </fieldset>
+
+        <fieldset class="question" data-answer="a">
+          <legend>6. Após um <code>DELETE</code> bem-sucedido e sem body, qual status é comum?</legend>
+          <label class="option"><input type="radio" name="q6" value="a"> <span><code>204 No Content</code></span></label>
+          <label class="option"><input type="radio" name="q6" value="b"> <span><code>201 Created</code></span></label>
+          <label class="option"><input type="radio" name="q6" value="c"> <span><code>422 Unprocessable Content</code></span></label>
+          <p class="explanation" hidden><strong>Resposta:</strong> <code>204</code> indica sucesso sem conteúdo no corpo da resposta.</p>
+        </fieldset>
+
+        <fieldset class="question" data-answer="b">
+          <legend>7. Por que usar <code>failOnStatusCode: false</code> em um teste negativo?</legend>
+          <label class="option"><input type="radio" name="q7" value="a"> <span>Para aprovar automaticamente qualquer erro.</span></label>
+          <label class="option"><input type="radio" name="q7" value="b"> <span>Para receber a resposta 4xx/5xx e executar as asserções.</span></label>
+          <label class="option"><input type="radio" name="q7" value="c"> <span>Para remover a autenticação da API.</span></label>
+          <p class="explanation" hidden><strong>Resposta:</strong> a opção permite analisar a resposta de erro; ela não substitui as asserções.</p>
+        </fieldset>
+
+        <fieldset class="question" data-answer="c">
+          <legend>8. Um <code>PUT</code> devolveu 200, mas o <code>GET</code> seguinte mostrou os dados antigos. Qual conclusão é correta?</legend>
+          <label class="option"><input type="radio" name="q8" value="a"> <span>O teste passou porque 200 sempre prova tudo.</span></label>
+          <label class="option"><input type="radio" name="q8" value="b"> <span>O problema é apenas visual e pode ser ignorado.</span></label>
+          <label class="option"><input type="radio" name="q8" value="c"> <span>A resposta HTTP teve sucesso, mas a persistência falhou.</span></label>
+          <p class="explanation" hidden><strong>Resposta:</strong> é necessário validar o estado final. Status de sucesso não compensa dados não persistidos.</p>
+        </fieldset>
+
+        <fieldset class="question" data-answer="a">
+          <legend>9. O JSON está bem formado, mas o e-mail viola a validação. Qual status é adequado?</legend>
+          <label class="option"><input type="radio" name="q9" value="a"> <span><code>422</code></span></label>
+          <label class="option"><input type="radio" name="q9" value="b"> <span><code>204</code></span></label>
+          <label class="option"><input type="radio" name="q9" value="c"> <span><code>301</code></span></label>
+          <p class="explanation" hidden><strong>Resposta:</strong> <code>422</code> é usado quando o conteúdo é compreendido, mas falha nas regras de validação.</p>
+        </fieldset>
+
+        <fieldset class="question" data-answer="b">
+          <legend>10. Qual conjunto produz a melhor evidência de um cadastro?</legend>
+          <label class="option"><input type="radio" name="q10" value="a"> <span>Apenas verificar que não apareceu erro.</span></label>
+          <label class="option"><input type="radio" name="q10" value="b"> <span>Status, contrato, ID criado e consulta posterior.</span></label>
+          <label class="option"><input type="radio" name="q10" value="c"> <span>Apenas medir o tempo da chamada.</span></label>
+          <p class="explanation" hidden><strong>Resposta:</strong> a combinação verifica resposta, contrato e persistência do novo recurso.</p>
+        </fieldset>
+
+        <div class="quiz-actions">
+          <button class="button" type="submit">Corrigir respostas</button>
+          <button class="button button-secondary" id="reset-quiz" type="button">Limpar quiz</button>
+        </div>
+      </form>
+      <div class="score" id="quiz-score" role="status" aria-live="polite">Responda às 10 questões e clique em “Corrigir respostas”.</div>
+    </section>
+
+    <section class="content-section" id="checklist">
+      <p class="kicker">08 • Fechamento</p>
+      <h2>Checklist antes da prova</h2>
+      <p class="section-intro">Marque cada item que você consegue explicar sem consultar o material. O progresso fica salvo somente neste navegador.</p>
+
+      <div class="checklist" id="review-checklist">
+        <label class="check-item"><input type="checkbox" value="1"> <span>Diferencio coleção de item específico pela rota.</span></label>
+        <label class="check-item"><input type="checkbox" value="2"> <span>Sei quando usar GET, POST, PUT e DELETE.</span></label>
+        <label class="check-item"><input type="checkbox" value="3"> <span>Sei explicar a diferença entre 200 e 201.</span></label>
+        <label class="check-item"><input type="checkbox" value="4"> <span>Reconheço os principais status 2xx, 4xx e 5xx.</span></label>
+        <label class="check-item"><input type="checkbox" value="5"> <span>Identifico método, rota, headers e body em uma requisição.</span></label>
+        <label class="check-item"><input type="checkbox" value="6"> <span>Sei enviar autenticação com Authorization: Bearer.</span></label>
+        <label class="check-item"><input type="checkbox" value="7"> <span>Consigo interpretar as asserções de um cy.request.</span></label>
+        <label class="check-item"><input type="checkbox" value="8"> <span>Entendo a finalidade de failOnStatusCode: false.</span></label>
+        <label class="check-item"><input type="checkbox" value="9"> <span>Sei por que validar o estado final após PUT ou DELETE.</span></label>
+        <label class="check-item"><input type="checkbox" value="10"> <span>Consigo descrever o fluxo POST → GET → PUT → GET → DELETE → GET.</span></label>
+      </div>
+      <p class="score" id="checklist-score" role="status" aria-live="polite">Progresso da revisão: 0 de 10 itens.</p>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <strong>SENAI • Curso Técnico em Desenvolvimento de Sistemas</strong><br>
+    Unidade Curricular: Teste de Sistemas • Aula 11 • Material de revisão
+  </footer>
+
+  <script>
+    (function () {
+      'use strict';
+
+      var quiz = document.getElementById('quiz-form');
+      var score = document.getElementById('quiz-score');
+      var questions = Array.from(quiz.querySelectorAll('.question'));
+
+      quiz.addEventListener('submit', function (event) {
+        event.preventDefault();
+        var hits = 0;
+        var answered = 0;
+
+        questions.forEach(function (question) {
+          var selected = question.querySelector('input:checked');
+          var explanation = question.querySelector('.explanation');
+          question.classList.remove('correct', 'incorrect');
+          explanation.hidden = false;
+
+          if (selected) {
+            answered += 1;
+            if (selected.value === question.dataset.answer) {
+              hits += 1;
+              question.classList.add('correct');
+            } else {
+              question.classList.add('incorrect');
+            }
+          } else {
+            question.classList.add('incorrect');
+          }
+        });
+
+        var message = hits + ' de ' + questions.length + ' respostas corretas.';
+        if (answered < questions.length) {
+          message += ' Você deixou ' + (questions.length - answered) + ' questão(ões) sem resposta.';
+        } else if (hits === questions.length) {
+          message += ' Excelente: você dominou os pontos centrais!';
+        } else if (hits >= 7) {
+          message += ' Bom resultado. Revise as explicações destacadas.';
+        } else {
+          message += ' Retome as seções acima e tente novamente.';
+        }
+        score.textContent = message;
+        score.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      });
+
+      document.getElementById('reset-quiz').addEventListener('click', function () {
+        quiz.reset();
+        questions.forEach(function (question) {
+          question.classList.remove('correct', 'incorrect');
+          question.querySelector('.explanation').hidden = true;
+        });
+        score.textContent = 'Responda às 10 questões e clique em “Corrigir respostas”.';
+      });
+
+      var checklist = document.getElementById('review-checklist');
+      var checks = Array.from(checklist.querySelectorAll('input[type="checkbox"]'));
+      var checklistScore = document.getElementById('checklist-score');
+      var storageKey = 'senai-revisao-api-rest-checklist';
+
+      function updateChecklist() {
+        var selected = checks.filter(function (check) { return check.checked; });
+        checklistScore.textContent = 'Progresso da revisão: ' + selected.length + ' de ' + checks.length + ' itens.';
+        try {
+          localStorage.setItem(storageKey, JSON.stringify(selected.map(function (check) { return check.value; })));
+        } catch (error) {
+          /* O material continua funcionando mesmo quando o armazenamento está indisponível. */
+        }
+      }
+
+      try {
+        var saved = JSON.parse(localStorage.getItem(storageKey) || '[]');
+        checks.forEach(function (check) { check.checked = saved.indexOf(check.value) !== -1; });
+      } catch (error) {
+        /* Ignora dados locais inválidos. */
+      }
+
+      checks.forEach(function (check) { check.addEventListener('change', updateChecklist); });
+      updateChecklist();
+    }());
+  </script>
+</body>
+</html>
